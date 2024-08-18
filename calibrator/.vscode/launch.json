@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: manual_calibrator.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manual_calibrator.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--config",
+                "debug_config.json"
+            ]
+        },
+        {
+            "name": "Python: vis_lidar_rgb.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/vis_lidar_rgb.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+            ]
+        }
+    ]
+}

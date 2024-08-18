@@ -1,0 +1,34 @@
+{
+    "autoDocstring.docstringFormat": "google",
+    "autopep8.args": [
+        "--aggressive"
+    ],
+    "files.autoSave": "afterDelay",
+    "python.linting.flake8Args": [
+        "--max-line-length=120",
+        "--ignore=W293, W504"
+    ],
+    "cSpell.words": [
+        "cosx",
+        "cosz",
+        "csvfile",
+        "fusenet",
+        "optim",
+        "ptcld",
+        "reprjt",
+        "reprojected",
+        "RMSE",
+        "sinx",
+        "siny",
+        "sinz",
+        "ssim",
+        "xmat",
+        "ymat",
+        "zmat"
+    ],
+    "python.linting.flake8Enabled": true,
+    "python.linting.pycodestylePath": "pycodestyle",
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=120"
+    ]
+}

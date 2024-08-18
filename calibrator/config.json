@@ -1,0 +1,69 @@
+{
+    "name": "v20230530",
+    "n_gpu": 1,
+    "seed": 123,
+    "mode": "train",
+    "arch": {
+        "type": "SimpleModel",
+        "args": {
+            "init_cam_intrinsic": [
+                12000, 12000, 730, 350
+            ],
+            "init_cam_extrinsic": [
+                0, 0, 0,
+                0, 0, 0
+            ],
+            "depth_image_size": [
+                720,
+                1280
+            ],
+            "depth_model_type": "DPT_Hybrid",
+            "train_depth_net": false
+        }
+    },
+    "data_loader": {
+        "type": "EcalDataset",
+        "args": {
+            "data_dir": "data/lion_walk/",
+            "init_cam_intrinsic": [
+                10000, 10000, 730, 350
+            ],
+            "init_cam_extrinsic": [
+                0.1295, 0.002, -0.076,
+                1.5707963267948966, 0, 1.5707963267948966
+            ]
+        },
+        "batch_size": 16,
+        "num_workers": 4,
+        "shuffle": true,
+        "valid_ratio": 0.2
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args": {
+            "lr": 0.0001,
+            "weight_decay": 1e-6,
+            "amsgrad": true
+        }
+    },
+    "loss": "ranking_loss",
+    "metrics": [],
+    "lr_scheduler": {
+        "type": "ReduceLROnPlateau",
+        "args": {
+            "mode": "min",
+            "factor": 0.1,
+            "patience": 10,
+            "verbose": true
+        }
+    },
+    "trainer": {
+        "epochs": 50000,
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "min val_loss",
+        "early_stop": 1000,
+        "tensorboard": true
+    }
+}

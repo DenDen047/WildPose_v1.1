@@ -1,0 +1,12 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/src/dji_rs3_pkg",
+    "python.autoComplete.extraPaths": [
+        "${home}/ros2_ws/livox_ros2_driver/install/livox_interfaces/lib/python3.8/site-packages",
+        "/opt/ros/foxy/lib/python3.8/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "${home}/ros2_ws/livox_ros2_driver/install/livox_interfaces/lib/python3.8/site-packages",
+        "/opt/ros/foxy/lib/python3.8/site-packages"
+    ],
+    "git.ignoreLimitWarning": true
+}
