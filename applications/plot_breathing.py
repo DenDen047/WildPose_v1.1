@@ -3,6 +3,7 @@ import numpy as np
 import pickle
 import json
 import pandas as pd
+import argparse
 from scipy.signal import lombscargle, butter, filtfilt, detrend
 from scipy.fft import fft, fftfreq
 from scipy.interpolate import interp1d
@@ -23,13 +24,13 @@ plt.rcParams.update({
 })
 
 CONFIG = {
-    "scene_dir": "data/lion_sleep",
-    "pcd_dir": "data/lion_sleep/lidar",
-    "sync_rgb_dir": "data/lion_sleep/sync_rgb",
-    "mask_dir": "data/lion_sleep/masks_lion",
-    "textured_pcd_dir": "data/lion_sleep/textured_pcds",
-    "bbox_info_fpath": "data/lion_sleep/train.json",
-    "imu_fpath": "data/lion_sleep/imu.json",
+    "scene_dir": "data/lion_sleep3",
+    "pcd_dir": "data/lion_sleep3/lidar",
+    "sync_rgb_dir": "data/lion_sleep3/sync_rgb",
+    "mask_dir": "data/lion_sleep3/masks_lion2",
+    "textured_pcd_dir": "data/lion_sleep3/textured_pcds",
+    "bbox_info_fpath": "data/lion_sleep3/train.json",
+    "imu_fpath": "data/lion_sleep3/imu.json",
 }
 
 
@@ -180,8 +181,8 @@ def main(mode):
         xf = fftfreq(N, T)[:N//2]
 
         # show the spectral plot
-        # plt.semilogy(xf, 2.0/N * np.abs(yf[0:N//2]))
-        plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
+        plt.semilogy(xf, 2.0/N * np.abs(yf[0:N//2]))
+        # plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
 
         # Highlight the range of bandpass filter
         plt.axvspan(lowcut, highcut, color='yellow', alpha=0.3, label='Bandpass Filter Range')
@@ -237,4 +238,9 @@ def main(mode):
 
 
 if __name__ == '__main__':
-    main('filtered')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--mode', type=str, default='fft',
+                        choices=['origin', 'filtered', 'subtract', 'spectral', 'fft', 'imu'],
+                        help='Mode to plot')
+    args = parser.parse_args()
+    main(args.mode)

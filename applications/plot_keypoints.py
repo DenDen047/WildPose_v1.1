@@ -555,4 +555,4 @@ def main(mode):
 
 
 if __name__ == '__main__':
-    main(mode='single_frame')
+    main(mode='left_leg')

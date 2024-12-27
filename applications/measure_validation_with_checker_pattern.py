@@ -10,7 +10,7 @@ from utils import camera as camera_utils
 from projection_functions import closest_point
 
 
-ECAL_FOLDER = 'data/calibration/ecal_meas/2024-06-13_11-22-14.768_measurement'
+ECAL_FOLDER = '/Volumes/Expansion/Calibration for WildPose v1.2/ecal_meas/2024-06-13_11-22-14.768_measurement'
 CAMERA_PARAM_FILENAME = 'manual_calibration.json'
 FRAME_START_INDEX = 0
 FRAME_END_INDEX = 200

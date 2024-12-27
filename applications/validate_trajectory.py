@@ -12,6 +12,8 @@ import open3d as o3d
 import math
 import random
 import time
+import argparse
+from loguru import logger
 
 import plotly.graph_objs as go
 import plotly.express as px
@@ -30,7 +32,7 @@ from projection_functions import closest_point
 
 
 IMG_WIDTH, IMG_HEIGHT = 1920, 1080
-DATA_DIR = 'data/calibration/2024-05-26_15-28-32.795_measurement'
+DATA_DIR = '/Users/ikuta/Documents/Projects/PhD/WildPose_v1.1/data/calibration_v1.2/2024-05-26_15-28-32.795_measurement'
 
 # set random seeds with the current time
 random.seed(42)
@@ -87,7 +89,7 @@ def circle_fitting(x, y):
 def distance_to_circle(points, center, radius):
     # Calculate distances as a matrix operation
     diff = points - center
-    distances = np.abs(np.sqrt(np.sum(diff**2, axis=1)) - radius)
+    distances = np.abs(np.linalg.norm(diff, axis=1) - radius)
     return distances
 
 
@@ -133,12 +135,74 @@ def ransac_circle_fit(points, n_sample=5, max_iterations=1000, threshold=2e-2, m
     return best_model, best_inliers
 
 
-def main(mode):
-    lidar_dir = os.path.join(DATA_DIR, 'lidar')
-    rgb_dir = os.path.join(DATA_DIR, 'sync_rgb')
-    mask_dir = os.path.join(DATA_DIR, 'masks')
-    calib_fpath = os.path.join(DATA_DIR, 'manual_calibration.json')
-    result_dir = os.path.join(DATA_DIR, 'calibration_results')
+def estimate_start_end_angle(points_2d, center=None):
+    if center is None:
+        center = np.mean(points_2d, axis=0)
+
+    start_angle = np.arctan2(points_2d[0, 1] - center[1], points_2d[0, 0] - center[0])
+    end_angle = np.arctan2(points_2d[-1, 1] - center[1], points_2d[-1, 0] - center[0])
+    # Convert to 0-2pi range
+    start_angle = (start_angle + 2*np.pi) % (2*np.pi)
+    end_angle = (end_angle + 2*np.pi) % (2*np.pi)
+    return start_angle, end_angle
+
+
+def calculate_trajectory_errors(
+    points_2d,
+    cx, cy, r,
+    timestamps,
+    n_revolutions=2,
+):
+    """Temporal consistency analysis.
+
+    Args:
+        points_2d: Nx2 array of reconstructed trajectory points
+        cx, cy, r: Circle parameters
+        timestamps: Array of timestamps for temporal analysis
+        n_revolutions: Number of complete revolutions (default: 2)
+
+    Returns:
+        dict: Error metrics including spatial and temporal components
+    """
+    # Calculate center based on known distance and x_offset
+    center = np.array([cx, cy])
+
+    # Convert timestamps to seconds from start
+    t = timestamps - timestamps[0]
+
+    # Calculate expected positions for constant speed motion
+    total_time = t[-1]
+    # Starting from π (leftmost position) and completing n_revolutions
+    start_angle, end_angle = estimate_start_end_angle(points_2d, center=center)
+    total_angle = 2 * np.pi * n_revolutions - np.abs(end_angle - start_angle)
+    angular_velocity = total_angle / total_time
+    expected_angles = start_angle + angular_velocity * t
+
+    # Generate expected positions
+    expected_positions = np.zeros_like(points_2d)
+    expected_positions[:, 0] = center[0] + r * np.cos(expected_angles)
+    expected_positions[:, 1] = center[1] + r * np.sin(expected_angles)
+
+    # Calculate temporal position errors
+    temporal_errors = np.linalg.norm(points_2d - expected_positions, axis=1)
+
+    return temporal_errors, expected_positions
+
+
+def main(
+    mode,
+    data_dir,
+    ref_distance=1.0,
+    ref_radius=2.0,
+    n_revolutions=2,
+):
+    lidar_dir = os.path.join(data_dir, 'lidar')
+    rgb_dir = os.path.join(data_dir, 'sync_rgb')
+    mask_dir = os.path.join(data_dir, 'masks')
+    calib_fpath = os.path.join(data_dir, 'manual_calibration.json')
+    result_dir = os.path.join(data_dir, f'{mode}_results')
+    log_fpath = os.path.join(result_dir, 'loguru.log')
+    logger.add(log_fpath)
 
     os.makedirs(result_dir, exist_ok=True)
 
@@ -155,63 +219,70 @@ def main(mode):
 
     # prepare the masks list([n_frame, n_id, H, W])
     masks = mask_info['masks']
-
-    # collect the 3D positions with Segment Anything Model
     timestamp0 = get_timestamp_from_img_fpath(img_fpaths[0])
-    positions_3d = {}
-    for i, (img_fpath, pcd_fpath, seg_mask) in tqdm(enumerate(zip(img_fpaths, pcd_fpaths, masks)), total=n_frame):
-        # if i > 200:
-        #     break
 
-        # load the frame
-        # rgb_img = load_rgb_img(img_fpath)
-        pcd_open3d = load_pcd(pcd_fpath, mode='open3d')
-        pts_in_lidar = np.asarray(pcd_open3d.points)
-        seg_mask = np.array(seg_mask)  # [n_id, H, W]
-        timestamp = get_timestamp_from_img_fpath(img_fpath)
+    positions_3d_fpath = os.path.join(result_dir, 'positions_3d.pickle')
+    if os.path.exists(positions_3d_fpath):
+        logger.info(f'Loading positions_3d from {positions_3d_fpath}')
+        with open(positions_3d_fpath, 'rb') as f:
+            positions_3d = pickle.load(f)
+    else:
+        # collect the 3D positions with Segment Anything Model
+        positions_3d = {}
+        for i, (img_fpath, pcd_fpath, seg_mask) in tqdm(enumerate(zip(img_fpaths, pcd_fpaths, masks)), total=n_frame):
+            # load the frame
+            # rgb_img = load_rgb_img(img_fpath)
+            pcd_open3d = load_pcd(pcd_fpath, mode='open3d')
+            pts_in_lidar = np.asarray(pcd_open3d.points)
+            seg_mask = np.array(seg_mask)  # [n_id, H, W]
+            timestamp = get_timestamp_from_img_fpath(img_fpath)
 
-        # reprojection
-        pcd_in_cam = lidar2cam_projection(pts_in_lidar, extrinsic)
-        pcd_in_img = cam2image_projection(pcd_in_cam, intrinsic)
-        pcd_in_cam = pcd_in_cam.T[:, :-1]
-        pcd_in_img = pcd_in_img.T[:, :-1]
+            # reprojection
+            pcd_in_cam = lidar2cam_projection(pts_in_lidar, extrinsic)
+            pcd_in_img = cam2image_projection(pcd_in_cam, intrinsic)
+            pcd_in_cam = pcd_in_cam.T[:, :-1]
+            pcd_in_img = pcd_in_img.T[:, :-1]
 
-        # # eroded_2d_mask -> median 3D point
-        # # erode the segmentation mask to reduce the error of estimated 3d positions
-        # for i in range(seg_mask.shape[0]):
-        #     # seg_mask.shape should be (n, 1, H, W)
-        #     seg_mask[i, 0, :, :] = erode_mask(seg_mask[i, 0, :, :], kernel_size=(5,5), iterations=4)
+            # # eroded_2d_mask -> median 3D point
+            # # erode the segmentation mask to reduce the error of estimated 3d positions
+            # for i in range(seg_mask.shape[0]):
+            #     # seg_mask.shape should be (n, 1, H, W)
+            #     seg_mask[i, 0, :, :] = erode_mask(seg_mask[i, 0, :, :], kernel_size=(5,5), iterations=4)
 
-        # colors, valid_mask, obj_points, obj_mask_from_color = extract_rgb_from_image(
-        #     pcd_in_img, pcd_in_cam, rgb_img, seg_mask, obj_ids,
-        #     width=IMG_WIDTH, height=IMG_HEIGHT
-        # )
+            # colors, valid_mask, obj_points, obj_mask_from_color = extract_rgb_from_image(
+            #     pcd_in_img, pcd_in_cam, rgb_img, seg_mask, obj_ids,
+            #     width=IMG_WIDTH, height=IMG_HEIGHT
+            # )
 
-        # # store the position data
-        # for id, points in obj_points.items():
-        #     position_3d = np.median(points, axis=0)
-        #     if id not in positions_3d.keys():
-        #         positions_3d[id] = []
-        #     positions_3d[id].append([timestamp] + position_3d.tolist())
+            # # store the position data
+            # for id, points in obj_points.items():
+            #     position_3d = np.median(points, axis=0)
+            #     if id not in positions_3d.keys():
+            #         positions_3d[id] = []
+            #     positions_3d[id].append([timestamp] + position_3d.tolist())
 
-        # median_2d -> 3d point
-        n_id = seg_mask.shape[0]
-        assert n_id == len(mask_info['id2label'])
-        for id, label in mask_info['id2label'].items():
-            mask = seg_mask[id]
-            if np.sum(mask) == 0:
-                positions_3d[label].append([timestamp] + [None] * 3)
-            else:
-                mask_ys, mask_xs = np.where(mask)
-                target_2d_pt = np.array([
-                    np.median(mask_xs),
-                    np.median(mask_ys),
-                ]) / mask_info['scale_factor']
-                _, pt_idx = closest_point(target_2d_pt, pcd_in_img[:, :2])
-                pt3d = pcd_in_cam[pt_idx, :]
-                if label not in positions_3d.keys():
-                    positions_3d[label] = []
-                positions_3d[label].append([timestamp] + pt3d.tolist())
+            # median_2d -> 3d point
+            n_id = seg_mask.shape[0]
+            assert n_id == len(mask_info['id2label'])
+            for id, label in mask_info['id2label'].items():
+                mask = seg_mask[id]
+                if np.sum(mask) == 0:
+                    positions_3d[label].append([timestamp] + [None] * 3)
+                else:
+                    mask_ys, mask_xs = np.where(mask)
+                    target_2d_pt = np.array([
+                        np.median(mask_xs),
+                        np.median(mask_ys),
+                    ]) / mask_info['scale_factor']
+                    _, pt_idx = closest_point(target_2d_pt, pcd_in_img[:, :2])
+                    pt3d = pcd_in_cam[pt_idx, :]
+                    if label not in positions_3d.keys():
+                        positions_3d[label] = []
+                    positions_3d[label].append([timestamp] + pt3d.tolist())
+
+        # save the data
+        with open(positions_3d_fpath, 'wb') as f:
+            pickle.dump(positions_3d, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     # array to dataframe
     dfs = {}
@@ -349,6 +420,178 @@ def main(mode):
             scaleanchor="x",
             scaleratio=1
         )
+    elif mode == 'motion_2d':
+        for label, v in dfs.items():
+            # remove rows having NaN
+            v = v.dropna()
+
+            # define color
+            rgb = COLORS[colors_indices[int(mask_info['label2id'][label])]]
+
+            # Get 2D positions
+            x_data = v['x']
+            y_data = v['z']
+            points_2d = np.array([x_data, y_data]).T
+
+            # set the ground truth
+            ground_truth = {
+                'distance': ref_distance,
+                'radius': ref_radius,
+            }
+            expected_center = np.array([0, ground_truth['distance']])
+
+            # ransac circle fit
+            (cx, cy, r), inliers = ransac_circle_fit(
+                points_2d,
+                n_sample=int(len(x_data) * 0.3),
+                max_iterations=10000,
+                threshold=2e-1,
+                min_inliers=0.6
+            )
+            measured_center = np.array([cx, cy])
+            measured_radius = r
+
+            # define valid_point_mask by the distance from the measured center
+            threshold = 10 # m
+            dists = np.linalg.norm(points_2d - measured_center, axis=1)
+            valid_point_mask = dists < threshold
+
+            # Calculate errors with optimized position
+            temporal_position_errors, expected_positions = calculate_trajectory_errors(
+                points_2d, cx, cy, r,
+                timestamps=np.array(v['time']),
+                n_revolutions=n_revolutions,
+            )
+
+            # Plot the fitting circle
+            fig.add_shape(
+                type="circle",
+                xref="x", yref="y",
+                x0=cx - r, y0=cy - r,
+                x1=cx + r, y1=cy + r,
+                line_color="LightSeaGreen",
+            )
+
+            # Plot lines connecting real and expected positions
+            for i, (real, expected) in enumerate(zip(points_2d, expected_positions)):
+                if i % 5 == 0:
+                    fig.add_trace(go.Scatter(
+                        x=[real[0], expected[0]],
+                        y=[real[1], expected[1]],
+                        mode='lines',
+                        line=dict(color='gray', width=1),
+                        showlegend=False
+                    ))
+
+            # show the expected center
+            fig.add_trace(go.Scatter(
+                x=[0],
+                y=[ground_truth['distance']],
+                mode='markers',
+                marker=dict(color='black', size=10, symbol='star'),
+                showlegend=False
+            ))
+            # show the real center
+            fig.add_trace(go.Scatter(
+                x=[cx],
+                y=[cy],
+                mode='markers',
+                marker=dict(color='red', size=10, symbol='star'),
+                showlegend=False
+            ))
+
+            # Plot non-outlier points
+            fig.add_trace(go.Scatter(
+                x=x_data[valid_point_mask],
+                y=y_data[valid_point_mask],
+                name=f"{label} (valid)",
+                mode='markers',
+                marker=dict(
+                    size=5,
+                    color=f"rgb({rgb['color'][0]}, {rgb['color'][1]}, {rgb['color'][2]})"
+                )
+            ))
+
+            # Plot outliers if any exist
+            if valid_point_mask.sum() < points_2d.shape[0]:
+                fig.add_trace(go.Scatter(
+                    x=x_data[~valid_point_mask],
+                    y=y_data[~valid_point_mask],
+                    name=f"{label} (outliers)",
+                    mode='markers',
+                    marker=dict(
+                        size=9,
+                        color='blue',
+                        symbol='x'
+                    )
+                ))
+
+            # Plot ground truth circle with optimized position
+            theta = np.linspace(0, 2*np.pi, 100)
+            circle_x = 0 + ground_truth['radius'] * np.cos(theta)
+            circle_y = ground_truth['distance'] + ground_truth['radius'] * np.sin(theta)
+
+            fig.add_trace(go.Scatter(
+                x=circle_x,
+                y=circle_y,
+                name='Ground Truth',
+                mode='lines',
+                line=dict(
+                    color='black',
+                    dash='dash'
+                )
+            ))
+
+            logger.info(f'Total points: {points_2d.shape[0]}')
+            logger.info(f'Valid points: {valid_point_mask.sum()}')
+            fitted_center = np.array([cx, cy])
+            diff_distance = np.linalg.norm(
+                fitted_center - expected_center)
+            logger.info(
+                f'Distance error: {diff_distance:.3f} m')
+            diff_radius = measured_radius - ground_truth['radius']
+            logger.info(
+                f'Radius error: {diff_radius:.3f} m')
+            avg_position_error = np.mean(
+                distance_to_circle(points_2d[valid_point_mask], np.array([cx, cy]), measured_radius)
+            )
+            logger.info(
+                f'Average position error: {avg_position_error:.3f} m')
+            avg_temporal_error = np.mean(
+                temporal_position_errors[valid_point_mask])
+            logger.info(
+                f'Average temporal-position error: {avg_temporal_error:.3f} m')
+
+            # Save detailed results
+            saved_data = {
+                'points_2d': points_2d,
+                'ground_truth': ground_truth,
+                'fitted_circle': [cx, cy, measured_radius],
+                'valid_point_mask': valid_point_mask,
+                'temporal_position_errors': temporal_position_errors,
+                'expected_positions': expected_positions,
+            }
+            with open(os.path.join(result_dir, 'trajectory_validation_result.pickle'), 'wb') as f:
+                pickle.dump(saved_data, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+        fig.update_layout(
+            font_family='Arial',
+            font_size=14,
+            xaxis_title='x (m)',
+            yaxis_title='Depth (m)',
+            showlegend=False,
+            xaxis=dict(
+                range=[expected_center[0]-5, expected_center[0]+5]
+            ),
+            yaxis=dict(
+                range=[expected_center[1]-5, expected_center[1]+5]
+            ),
+            margin=dict(l=60, r=20, t=20, b=60)
+        )
+        fig.update_yaxes(
+            scaleanchor="x",
+            scaleratio=1
+        )
 
     fig.write_image(os.path.join(result_dir, "plot_validate_trajectory.png"))
     fig.write_html(os.path.join(result_dir, "plot_validate_trajectory.html"))
@@ -357,4 +600,12 @@ def main(mode):
 
 
 if __name__ == '__main__':
-    main('position_2d')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--mode', type=str, default='motion_2d',
+                        choices=['position_2d', 'position_3d', 'motion_2d'], help='Mode to run the script')
+    parser.add_argument('--data_dir', type=str, default=DATA_DIR, help='Path to data directory')
+    parser.add_argument('--ref_distance', type=float, default=1.0, help='Reference distance for validation (m)')
+    parser.add_argument('--ref_radius', type=float, default=1.0, help='Reference radius for validation (m)')
+    parser.add_argument('--n_revolutions', type=int, default=2, help='Number of revolutions')
+    args = parser.parse_args()
+    main(args.mode, args.data_dir, args.ref_distance, args.ref_radius, args.n_revolutions)

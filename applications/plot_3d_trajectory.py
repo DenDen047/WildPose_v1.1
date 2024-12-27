@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import json
 import cv2
+import argparse
 from tqdm import tqdm
 import scipy.ndimage
 import open3d as o3d
@@ -113,7 +114,7 @@ def calculate_precision(positions_3d):
 
 
 def main(mode):
-    data_dir = 'data/springbok_herd/'
+    data_dir = '/Users/ikuta/Documents/Projects/PhD/wildpose-applications/data/springbok_herd2/'
     lidar_dir = os.path.join(data_dir, 'lidar')
     rgb_dir = os.path.join(data_dir, 'sync_rgb')
     mask_dir = os.path.join(data_dir, 'masks2')
@@ -134,7 +135,11 @@ def main(mode):
     timestamp0 = get_timestamp_from_img_fpath(img_fpaths[0])
     accumulated_pcd_in_cam = None
     positions_3d = {}
-    for img_fpath, pcd_fpath, mask_fpath, mask_id_fpath in tqdm(zip(img_fpaths, pcd_fpaths, mask_fpaths, mask_id_fpaths)):
+    for img_fpath, pcd_fpath, mask_fpath, mask_id_fpath in tqdm(
+        zip(img_fpaths, pcd_fpaths, mask_fpaths, mask_id_fpaths),
+        total=len(img_fpaths),
+        desc='Collecting 3D positions'
+    ):
         # load the frame
         rgb_img = load_rgb_img(img_fpath)
         pcd_open3d = load_pcd(pcd_fpath, mode='open3d')
@@ -452,28 +457,43 @@ def main(mode):
         )
         fig.layout.scene.camera.projection.type = "orthographic"
     elif mode == 'velocity':
+        axis = 'y'
+        y_range = None
+
+        def smooth_velocity(velocity, window_size=5):
+            # Apply Gaussian smoothing
+            return scipy.ndimage.gaussian_filter1d(velocity, sigma=window_size / 2)
+
         for k, v in dfs.items():
             # Calculate velocity
-            # velocisty = np.sqrt(
-            #     np.diff(v['x'])**2 +
-            #     np.diff(v['y'])**2 +
-            #     np.diff(v['z'])**2
-            # ) / np.diff(v['time'])
-            velocisty = np.diff(v['z']) / np.diff(v['time'])
+            velocity = np.diff(v[axis]) / np.diff(v['time'])
 
             # Add a final velocity point (assuming same as the last calculated velocity)
-            velocisty = np.append(velocisty, velocisty[-1])
+            velocity = np.append(velocity, velocity[-1])
 
             # Moving average
-            moving_average = np.convolve(velocisty, np.ones(5)/5, mode='valid')
+            smoothed_velocity = smooth_velocity(velocity, window_size=3)
 
             # Get color from COLORS
             rgb = COLORS[colors_indices[k]]['color']
 
-            # Create the velocity plot
+            # Plot raw velocity points with low opacity
             fig.add_trace(go.Scatter(
-                x=v['time'] - timestamp0,  # Adjust time to start from 0
-                y=moving_average,
+                x=v['time'] - timestamp0,
+                y=velocity,
+                mode='lines',
+                name=f'{k} (raw)',
+                marker=dict(
+                    size=0.5,
+                    color=f'rgba({rgb[0]}, {rgb[1]}, {rgb[2]}, 0.2)'
+                ),
+                showlegend=False
+            ))
+
+            # Plot smoothed velocity line
+            fig.add_trace(go.Scatter(
+                x=v['time'] - timestamp0,
+                y=smoothed_velocity,
                 mode='lines',
                 name=f'{k}',
                 line=dict(
@@ -481,11 +501,39 @@ def main(mode):
                     color=f'rgb({rgb[0]}, {rgb[1]}, {rgb[2]})'
                 )
             ))
-
+        fig.update_xaxes(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray',
+            zeroline=False,
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+            tickwidth=1,
+            tickcolor='black',
+            ticklen=5,
+        )
+        fig.update_yaxes(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray',
+            zeroline=False,
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+            tickwidth=1,
+            tickcolor='black',
+            ticklen=5,
+            range=y_range
+        )
         fig.update_layout(
+            title=None,
             xaxis_title='Time (s)',
-            yaxis_title='Velocity along z-axis (m/s)',
+            yaxis_title=f'Velocity along {axis}-axis (m/s)',
             font=dict(family="Arial", size=14),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            margin=dict(l=60, r=20, t=20, b=60),
             legend_title='Individuals',
             hovermode='x unified'
         )
@@ -527,7 +575,7 @@ def main(mode):
             z=distance_matrix,
             x=ids,
             y=ids,
-            colorscale='Reds_r',
+            colorscale='Jet',
             colorbar=dict(
                 title='Average distance (m)',
                 titleside='right',
@@ -639,7 +687,7 @@ def main(mode):
             z=initial_matrix,
             x=ids,
             y=ids,
-            colorscale='Reds_r',
+            colorscale='Jet',
             colorbar=dict(
                 title='Distance (m)',
                 titleside='right',
@@ -682,7 +730,7 @@ def main(mode):
 
         # Create frames for animation
         frames = []
-        for timestamp in timestamps:
+        for timestamp in tqdm(timestamps, desc='Creating frames for animation'):
             matrix, _ = calculate_distances_at_time(dfs, timestamp)
             frame = go.Frame(
                 data=[go.Heatmap(
@@ -705,7 +753,7 @@ def main(mode):
                     buttons=[
                         dict(label='Play',
                              method='animate',
-                             args=[None, {'frame': {'duration': 10, 'redraw': True},
+                             args=[None, {'frame': {'duration': 100, 'redraw': True},
                                           'fromcurrent': True,
                                           'transition': {'duration': 0}}]),
                         dict(label='Pause',
@@ -728,10 +776,15 @@ def main(mode):
         )
 
     fig.show()
-    fig.write_image(os.path.join('results', "plot_3d_trajectory.png"))
-    fig.write_html(os.path.join('results', "plot_3d_trajectory.html"))
-    fig.write_image(os.path.join('results', "plot_3d_trajectory.pdf"))
+    fig.write_image(os.path.join('results', f"plot_3d_trajectory_{mode}.png"))
+    fig.write_html(os.path.join('results', f"plot_3d_trajectory_{mode}.html"))
+    fig.write_image(os.path.join('results', f"plot_3d_trajectory_{mode}.pdf"))
 
 
 if __name__ == '__main__':
-    main('position_3d')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--mode', type=str, default='position_3d',
+                        choices=['position_3d', 'position_without_y', 'velocity', 'neighbor_density', 'neighbor_density_animation'],
+                        help='Mode to plot')
+    args = parser.parse_args()
+    main(args.mode)
