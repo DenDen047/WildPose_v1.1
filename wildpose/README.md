@@ -1,5 +1,28 @@
 # WildPose v1.1
 
+This repository contains the implementation of WildPose, a multi-sensor system for wildlife tracking and pose estimation.
+This guide will help you set up and run the complete WildPose system on a Jetson AGX Xavier platform.
+
+## System Overview
+
+WildPose consists of:
+- XIMEA MQ022CG-CM camera for high-quality image capture
+- Livox LiDAR for 3D point cloud data
+- DJI RS3 gimbal for camera stabilization
+- Jetson AGX Xavier for real-time processing
+
+![Slide86](https://denden047.github.io/static/images/wildpose/hardware_connection.jpg)
+
+## Quick Start
+
+1. Set up hardware and install prerequisites (JetPack v5, ROS2 Foxy)
+2. Install and configure required drivers (XIMEA, Livox, CAN bus)
+3. Build the WildPose packages
+4. Launch the system:
+```bash
+ros2 launch wildpose_bringup wildpose_launch.py
+```
+
 ## Hardware
 
 ### XIMEA -- MQ022CG-CM

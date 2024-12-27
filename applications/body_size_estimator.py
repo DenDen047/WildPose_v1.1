@@ -320,12 +320,12 @@ def main():
 
     # load the config file
     config = {
-        'scene_dir': './data/lion_sleep',
-        'pcd_dir': './data/lion_sleep/lidar',
-        'sync_rgb_dir': './data/lion_sleep/sync_rgb',
-        'mask_dir': './data/lion_sleep/masks_lion',
-        'imu_fpath': './data/lion_sleep/imu.json',
-        'bbox_info_fpath': './data/lion_sleep/train.json',
+        'scene_dir': './data/lion_sleep3',
+        'pcd_dir': './data/lion_sleep3/lidar',
+        'sync_rgb_dir': './data/lion_sleep3/sync_rgb',
+        'mask_dir': './data/lion_sleep3/masks_lion2',
+        'imu_fpath': './data/lion_sleep3/imu.json',
+        'bbox_info_fpath': './data/lion_sleep3/train.json',
     }
 
     # load data file paths

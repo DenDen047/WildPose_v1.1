@@ -1,26 +1,115 @@
 # WildPose Applications
 
-## Files in Data Directory
+This repository contains the code for the figures and tables in the WildPose paper.
 
-### `textured_pcds/`
+## Setting up the environment
 
-1. `*.pcd` files contain point locations and colors.
-2. `*_mask.pcd` files contain point locations and masks for lions.
-For instance, points having rgb values `1` are lion `1`(the left in image) and `2` are lion `2`( the right one in image)
+```bash
+conda env create -f environment.yml
+conda activate wildpose
+```
 
-### `masks/`
+## File Organization for a scene data
 
-This directory has the output from Segment Anything.
+The data is organized as follows:
 
-1. `*.npy` files contain the mask numpy-array with the shape `(I, 1, H, W)`, where `I` is the number of object IDs and `H` and `W` show the image size.
+```
+data/
+├── manual_calibration.json
+├── sync_rgb/
+│   ├── 000001.jpeg
+│   ├── 000002.jpeg
+│   ├── 000003.jpeg
+│   ├── ...
+├── lidar/
+│   ├── 000001.pcd
+│   ├── 000002.pcd
+│   ├── 000003.pcd
+│   ├── ...
+├── masks/
+    ├── 000001.png
+    ├── 000002.png
+    ├── 000003.png
+    ├── ...
+```
 
-## Respiration of Lion
+where `sync_rgb` is the synchronized RGB images, `lidar` is the LiDAR point clouds, and `masks` is the masks of the animals.
 
-1. Make the bounding boxes of the target animals
-2. Predict the masks of each individuals with Segment Anything (`segment_anything.py`)
-<!-- 3. Make the labeled, textured point cloud data (`vis_lidar_rgb_cam_lion.py`) -->
-3. Estimate the transition of the body size (`body_size_estimator.py`)
+## Making the figures and tables in the WildPose paper
 
-## SAM 2
+### Introduction section
 
-https://colab.research.google.com/drive/1q-_LLIBZ-WW64VRzJ9fSVYDBOvADvWkW?usp=sharing
+Fig. 1D.
+```bash
+python make_depth_image.py
+```
+
+### Calibration Validation
+
+For the calibration validation figures (Fig. 2A and Supplementary Fig. S2-S3), run:
+```bash
+python plot_calib_validation.py             # Fig. 2A and Fig. S3
+python plot_calib_validation_by_angles.py   # Fig. S2
+```
+
+### Object Tracking Precision
+
+Analyze the validation results of the object tracking precision.
+```bash
+# First, run the validation:
+python validate_trajectory.py \
+    --mode position_2d \
+    --data_dir /path/to/data
+./batch_validate_trajectory.sh
+
+# Then generate figures:
+python plot_trajectory_validation.py            # Fig. 2D
+python plot_trajectory_validation_by_circles.py # Fig. S4A
+python plot_motion_validation.py                # Fig. 2E and Fig. S4B
+python create_synthetic_figure.py               # Fig. S5
+```
+
+### Animal Morphology & Locomotion
+
+Get the morphometrics data (Table 1).
+```bash
+python measure_morphometrics.py
+```
+
+Fig. 3.
+```bash
+python plot_keypoints.py
+```
+
+- `single_frame` mode (Fig. 3A)
+- `left_{front|hind}_leg` mode (Fig. 3B)
+
+Fig. S6.
+```bash
+python plot_coloured_pcd.py
+```
+
+### Tracking Individual Animals in 3D
+
+```bash
+python plot_3d_trajectory.py    # Supports multiple modes:
+# --mode position_3d            # Fig. S7
+# --mode position_without_y     # Fig. 3C
+# --mode velocity               # Fig. S8
+# --mode neighbor_density       # Fig. 3D
+# --mode neighbor_density_animation # Movie 1
+```
+
+### Fine Scale Deformation Monitoring
+
+Prerequisites:
+1. Generate bounding boxes for target animals
+2. Predict individual masks using Segment Anything (`segment_anything.py`)
+3. Estimate body size transitions (`body_size_estimator.py`)
+
+```bash
+python plot_breathing.py    # Supports modes:
+# --mode filtered   # Fig. 4A
+# --mode fft        # Fig. 4B
+# --mode imu        # Fig. 4C and 4D
+```

@@ -48,13 +48,13 @@ fontScale = 1
 color = (255, 0, 0)
 thickness = 2
 
-data_dir = 'data/lion_sleep'
+data_dir = 'data/lion_sleep3'
 output_dir = os.path.join(data_dir, 'masks_lion')
 
 IMG_WIDTH, IMG_HEIGHT = 1280, 720
 OUTPUT_WIDTH, OUTPUT_HEIGHT = 1280, 720
 FPS = 3
-OUTPUT_VIDEO_PATH = os.path.join(data_dir, 'seg_lion_sleep.avi')
+OUTPUT_VIDEO_PATH = os.path.join(data_dir, 'seg_lion_sleep3.avi')
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 out = cv2.VideoWriter(OUTPUT_VIDEO_PATH, fourcc, FPS,
                       (OUTPUT_WIDTH, OUTPUT_HEIGHT))
