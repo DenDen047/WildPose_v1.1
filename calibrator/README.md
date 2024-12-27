@@ -1,42 +1,51 @@
 # Manual Calibrator for WildPose v1.1
 
-## Manual Calibrator
+This tool helps calibrate camera parameters for the WildPose system. It allows users to manually adjust both intrinsic and extrinsic camera parameters through an interactive interface.
 
-After the change `debug_config.json`, run:
+## Purpose
+- Assists in fine-tuning camera calibration parameters for WildPose
+- Provides visual feedback for parameter adjustments
+- Enables batch processing of multiple frames
+- Supports manual refinement of auto-calibrated results
+
+## Installation
+```bash
+$ conda env create -f environment.yml
+$ conda activate wildpose
+```
+
+## Usage
+1. Configure your settings in `debug_config.json`
+2. Run the calibrator:
 ```bash
 $ python manual_calibrator.py --config debug_config.json
 ```
 
-Operation
+## Controls and Operation
 ```yaml
-# change intrinsic parameters
-←: decrease x-position of principal point c_x
-→: increase x-position of principal point c_x
-↑: decrease y-position of principal point c_y
-↓: increase y-position of principal point c_y
+# Intrinsic Parameter Controls
+←/→: Adjust principal point (c_x) left/right
+↑/↓: Adjust principal point (c_y) up/down
 
-# change extrinsic parameters
-w: increase the camera pitch
-s: decrease the camera pitch
-a: increase the camera yaw
-d: decrease the camera yaw
-e: increase the camera roll
-q: decrease the camera roll
-W: increase the camera position z (depth direction)
-S: decrease the camera position z
-A: increase the camera position x
-D: decrease the camera position x
+# Extrinsic Parameter Controls
+w/s: Increase/decrease camera pitch
+a/d: Increase/decrease camera yaw
+e/q: Increase/decrease camera roll
+W/S: Increase/decrease camera Z position (depth)
+A/D: Increase/decrease camera X position
 
-0: reset parameters
-m: merge frames in a batch
-c: change the point color mode
->: increase the change step
-<: decrease the change step
-n: show the next frame
-return/enter: save the current parameter
+# Additional Controls
+0: Reset all parameters to default
+m: Merge frames in current batch
+c: Toggle point color display mode
+>/< : Increase/decrease adjustment step size
+n: Advance to next frame
+Enter: Save current parameters
 ```
 
-## Acknowledgement
+## Output
+The calibrator saves the adjusted parameters in the format specified in your configuration file. These parameters can then be used in the main WildPose system for accurate pose estimation.
 
+## Acknowledgement
 This project is based on [victoresque/pytorch-template](https://github.com/victoresque/pytorch-template).
 
