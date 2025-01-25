@@ -73,12 +73,9 @@ def main(mode, simplified=False):
         radii.append(result['ground_truth']['radius'])
 
     # change error unit to mm if simplified is True
-    if simplified:
-        for key in metrics:
-            metrics[key] = [x * 1000 for x in metrics[key]]
-        error_unit = 'mm'
-    else:
-        error_unit = 'm'
+    for key in metrics:
+        metrics[key] = [x * 1000 for x in metrics[key]]
+    error_unit = 'mm'
 
     if simplified:
         # Create simplified plot similar to trajectory validation
@@ -160,15 +157,15 @@ def main(mode, simplified=False):
             fig.add_trace(box_plot)
 
         fig.update_layout(
-            width=800 if simplified else 1200,
-            height=600 if simplified else 800,
+            width=700,
+            height=400,
             font=dict(family='Arial', size=18),
             legend_title='Circle radius',
             boxmode='group',
             boxgap=0.2,
             boxgroupgap=0.4,
             margin=dict(l=60, r=20, t=20, b=60),
-            showlegend=True,
+            showlegend=False,
             plot_bgcolor='white',
             paper_bgcolor='white',
         )
@@ -219,4 +216,4 @@ if __name__ == '__main__':
     #                   choices=['all', 'distance', 'radius', 'position', 'temporal'],
     #                   help='Type of plot to generate')
     # args = parser.parse_args()
-    main('temporal_position_error', simplified=True)
+    main('temporal_position_error', simplified=False)

@@ -37,48 +37,62 @@ def main():
     # Create figure with secondary y-axis
     fig = make_subplots()
 
-    # Create separate box plots for each unique angle
+    # Create scatter plots and line plots for each unique angle
     unique_angles = sorted(set(angles))
-    # Add more colors if needed
-    colors = ['lightblue', 'lightgreen', 'lightpink']
+    symbols = ['circle', 'diamond', 'square']
+    dark_colors = ['blue', 'green', 'orange']  # Darker colors for scatter
+    light_colors = ['lightblue', 'lightgreen', 'orange']  # Lighter colors for lines
 
     for i, angle in enumerate(unique_angles):
         mask = np.array(angles) == angle
-        # Add box plots for this angle
-        fig.add_trace(go.Box(
-            x=np.array(xs)[mask],
-            y=np.array(y_points)[mask],
-            name=f'{angle}°',
-            boxpoints='all',  # Show all points
-            jitter=0,  # Add some random spread
-            pointpos=0,  # Center points on the box
-            line=dict(color='black', width=1),
-            fillcolor=colors[i],
-            whiskerwidth=0.7,
+        x_values = np.array(xs)[mask]
+        y_values = np.array(y_points)[mask]
+
+        # Add scatter points with darker colors
+        fig.add_trace(go.Scatter(
+            x=x_values,
+            y=y_values,
+            name=f'{angle}° (points)',
+            mode='markers',
             marker=dict(
-                color=colors[i].replace('light', ''),
-                size=5,
-                opacity=1,
-                symbol='diamond'
+                color=dark_colors[i],
+                size=8,  # Reduced size to match circles plot
+                symbol=symbols[i],
+                opacity=0.8  # Matched opacity with circles plot
             ),
+            showlegend=True
+        ))
+
+        # Calculate and add average line with lighter colors
+        unique_x = np.unique(x_values)
+        avg_y = [np.mean(y_values[x_values == x]) for x in unique_x]
+
+        fig.add_trace(go.Scatter(
+            x=unique_x,
+            y=avg_y,
+            name=f'{angle}° (mean)',
+            mode='lines',
+            line=dict(
+                color=light_colors[i],
+                width=2,
+                dash='dot',
+            ),
+            showlegend=True
         ))
 
     # Update layout
     fig.update_layout(
         legend_title='Board Angle',
-        title=None,  # Remove title for scientific paper style
+        title=None,
         xaxis_title='Distance (m)',
         yaxis_title='Absolute error (mm)',
-        width=1200,
-        height=800,
+        width=600,
+        height=400,
         font=dict(family='Arial', size=18),
         plot_bgcolor='white',
         paper_bgcolor='white',
         margin=dict(l=60, r=20, t=20, b=60),
-        showlegend=True,
-        boxmode='group',
-        boxgap=0.5,
-        boxgroupgap=0.07
+        showlegend=True
     )
 
     # Update axes
