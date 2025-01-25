@@ -46,10 +46,10 @@ python make_depth_image.py
 
 ### Calibration Validation
 
-For the calibration validation figures (Fig. 2A and Supplementary Fig. S2-S3), run:
+For the calibration validation figures (Fig. 2A), run:
 ```bash
-python plot_calib_validation.py             # Fig. 2A and Fig. S3
-python plot_calib_validation_by_angles.py   # Fig. S2
+python plot_calib_validation.py             # Fig. S1
+python plot_calib_validation_by_angles.py   # Fig. 2A
 ```
 
 ### Object Tracking Precision
@@ -63,10 +63,9 @@ python validate_trajectory.py \
 ./batch_validate_trajectory.sh
 
 # Then generate figures:
-python plot_trajectory_validation.py            # Fig. 2D
-python plot_trajectory_validation_by_circles.py # Fig. S4A
-python plot_motion_validation.py                # Fig. 2E and Fig. S4B
-python create_synthetic_figure.py               # Fig. S5
+python plot_trajectory_validation_by_circles.py # Fig. 2D
+python plot_motion_validation.py                # Fig. 2E
+python create_synthetic_figure.py               # Fig. S2
 ```
 
 ### Animal Morphology & Locomotion
@@ -76,7 +75,7 @@ Get the morphometrics data (Table 1).
 python measure_morphometrics.py
 ```
 
-Fig. 3.
+Fig. 3A&B.
 ```bash
 python plot_keypoints.py
 ```
@@ -84,7 +83,7 @@ python plot_keypoints.py
 - `single_frame` mode (Fig. 3A)
 - `left_{front|hind}_leg` mode (Fig. 3B)
 
-Fig. S6.
+Fig. S3.
 ```bash
 python plot_coloured_pcd.py
 ```
@@ -93,9 +92,9 @@ python plot_coloured_pcd.py
 
 ```bash
 python plot_3d_trajectory.py    # Supports multiple modes:
-# --mode position_3d            # Fig. S7
+# --mode position_3d            # Fig. S4A
 # --mode position_without_y     # Fig. 3C
-# --mode velocity               # Fig. S8
+# --mode velocity               # Fig. S4B-D
 # --mode neighbor_density       # Fig. 3D
 # --mode neighbor_density_animation # Movie 1
 ```

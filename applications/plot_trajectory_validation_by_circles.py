@@ -57,8 +57,8 @@ def main():
         # Add box plots for this radius
         fig.add_trace(go.Box(
             x=np.array(xs)[mask],
-            # y=np.array(y_points)[mask] * 1000,  # Convert to mm
-            y=np.array(y_points)[mask],  # Convert to m
+            y=np.array(y_points)[mask] * 1000,  # Convert to mm
+            # y=np.array(y_points)[mask],  # Convert to m
             name=f'r={radius}m',
             boxpoints='all',  # Show all points
             # jitter=0,  # Add some random spread
@@ -79,14 +79,14 @@ def main():
         legend_title='Circle radius',
         title=None,  # Remove title for scientific paper style
         xaxis_title='Distance (m)',
-        yaxis_title='Absolute error (m)',
-        width=1200,
-        height=800,
+        yaxis_title='Absolute error (mm)',
+        width=700,
+        height=400,
         font=dict(family='Arial', size=18),
         plot_bgcolor='white',
         paper_bgcolor='white',
         margin=dict(l=60, r=20, t=20, b=60),
-        showlegend=True,
+        showlegend=False,
         boxmode='group',
         boxgap=0.2,
         boxgroupgap=0.4,
@@ -117,6 +117,8 @@ def main():
         tickcolor='black',
         ticklen=5
     )
+
+    fig.update_yaxes({'range': (-5, 350), 'autorange': False})
 
     # Save the plot
     if not os.path.exists(CONFIG['result_dir']):
