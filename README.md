@@ -23,19 +23,24 @@
 <img src="https://denden047.github.io/static/images/wildpose/IMG_5295.jpg" width="80%">
 </p>
 <div align=center>
-This is the official implementation of our paper <a href="https://www.biorxiv.org/content/10.1101/2024.02.05.578861v3"><b>WildPose: A Long-Range 3D Wildlife Motion Capture System</b></a>.
+This is the official implementation of our paper <a href="https://www.biorxiv.org/content/10.1101/2024.02.05.578861v4"><b>WildPose: A Long-Range 3D Wildlife Motion Capture System</b></a>.
 </div>
 
 ## Citation
 
 ```bibtex
-@article {Muramatsu2024.02.05.578861,
-	author = {Muramatsu, Naoya and Shin, Sangyun and Deng, Qianyi and Markham, Andrew and Patel, Amir},
-	title = {WildPose: A Long-Range 3D Wildlife Motion Capture System},
-	year = {2024},
-	doi = {10.1101/2024.02.05.578861},
-	publisher = {Cold Spring Harbor Laboratory},
-	eprint = {https://www.biorxiv.org/content/early/2024/03/20/2024.02.05.578861.full.pdf},
-	journal = {bioRxiv}
+@article{10.1242/jeb.249987,
+    author = {Muramatsu, Naoya and Shin, Sangyun and Deng, Qianyi and Markham, Andrew and Patel, Amir},
+    title = {WildPose: a long-range 3D wildlife motion capture system},
+    journal = {Journal of Experimental Biology},
+    volume = {228},
+    number = {5},
+    pages = {JEB249987},
+    year = {2025},
+    month = {03},
+    issn = {0022-0949},
+    doi = {10.1242/jeb.249987},
+    url = {https://doi.org/10.1242/jeb.249987},
+    eprint = {https://journals.biologists.com/jeb/article-pdf/228/5/JEB249987/3637925/jeb249987.pdf},
 }
 ```
