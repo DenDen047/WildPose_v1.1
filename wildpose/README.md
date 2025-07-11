@@ -1,28 +1,5 @@
 # WildPose v1.1
 
-This repository contains the implementation of WildPose, a multi-sensor system for wildlife tracking and pose estimation.
-This guide will help you set up and run the complete WildPose system on a Jetson AGX Xavier platform.
-
-## System Overview
-
-WildPose consists of:
-- XIMEA MQ022CG-CM camera for high-quality image capture
-- Livox LiDAR for 3D point cloud data
-- DJI RS3 gimbal for camera stabilization
-- Jetson AGX Xavier for real-time processing
-
-![Slide86](https://denden047.github.io/static/images/wildpose/hardware_connection.jpg)
-
-## Quick Start
-
-1. Set up hardware and install prerequisites (JetPack v5, ROS2 Foxy)
-2. Install and configure required drivers (XIMEA, Livox, CAN bus)
-3. Build the WildPose packages
-4. Launch the system:
-```bash
-ros2 launch wildpose_bringup wildpose_launch.py
-```
-
 ## Hardware
 
 ### XIMEA -- MQ022CG-CM
@@ -220,11 +197,6 @@ $ sudo reboot
 $ sudo apt install -y busybox
 ```
 
-Add the following code into your `/etc/rc.local`:
-```bash
-sh /home/naoya/WildPose_v1.1/src/dji_rs3_pkg/enable_CAN.sh &
-```
-
 References:
 - [Enabling CAN on Nvidia Jetson Xavier Developer Kit](https://medium.com/@ramin.nabati/enabling-can-on-nvidia-jetson-xavier-developer-kit-aaaa3c4d99c9)
 - [hmxf/can_xavier -- GitHub](https://github.com/hmxf/can_xavier)
@@ -236,6 +208,38 @@ $ sudo apt install -y xrdp
 $ cd
 $ echo "xfce4-session" | tee .xsession
 $ sudo reboot
+```
+
+#### Logitech Wireless Gamepad F710
+
+Mode `X`.
+
+```bash
+$ usb-devices
+...
+T:  Bus=01 Lev=02 Prnt=03 Port=02 Cnt=01 Dev#= 10 Spd=12  MxCh= 0
+D:  Ver= 2.00 Cls=ff(vend.) Sub=ff Prot=ff MxPS= 8 #Cfgs=  1
+P:  Vendor=046d ProdID=c21f Rev=03.05
+S:  Manufacturer=Logitech
+S:  Product=Wireless Gamepad F710
+S:  SerialNumber=3DA39E79
+C:  #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=98mA
+I:  If#=0x0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=5d Prot=01 Driver=xpad
+...
+```
+
+Check the connection between Jetson and F710.
+
+```bash
+$ sudo apt-get install -y jstest-gtk
+$ jstest /dev/input/js0
+```
+
+Install `joy_linux` package.
+
+```bash
+$ sudo apt install -y ros-foxy-joy-linux
+$ ros2 run joy_linux joy_linux_node --ros-args -p dev_name:="Wireless Gamepad F710"
 ```
 
 
@@ -256,19 +260,19 @@ Recommend Extensions:
 - [ROS2](https://marketplace.visualstudio.com/items?itemName=nonanonno.vscode-ros2)
 
 
+## Build
+
+```bash
+$ cd ~/WildPose_v1.1
+$ colcon build --packages-select wildpose_bringup --symlink-install
+```
+
 ## Usage
 
 Run WildPose with the following commmand, and the data will be recorded in a rosbag file in `rosbags/`.
 
 ```bash
 $ ros2 launch wildpose_bringup wildpose_launch.py
-```
-
-## Build
-
-```bash
-$ cd ~/WildPose_v1.1
-$ colcon build --packages-select wildpose_bringup --symlink-install
 ```
 
 ## Generate Video

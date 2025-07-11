@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'dji_rs3_pkg'
+package_name = 'gamepad_pkg'
 
 setup(
     name=package_name,
@@ -13,14 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='name',
-    maintainer_email='email',
+    maintainer='naoya',
+    maintainer_email='sh.mn.nat@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'dji_rs3_node = dji_rs3_pkg.dji_rs3_node:main'
+            # "f710_node = gamepad_pkg.f710_node:main",
         ],
     },
 )
