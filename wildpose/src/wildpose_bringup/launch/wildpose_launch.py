@@ -12,7 +12,6 @@ xfer_format   = 0    # 0-Pointcloud2(PointXYZRTL), 1-customized pointcloud forma
 multi_topic   = 0    # 0-All LiDARs share the same topic, 1-One LiDAR one topic
 data_src      = 0    # 0-lidar,1-hub
 publish_freq  = 10.0 # freqency of publish,1.0,2.0,5.0,10.0,etc
-return_mode = 2 # 2-dual return
 output_type   = 0
 frame_id      = 'livox_frame'
 lvx_file_path = '/home/livox/livox_test.lvx'
@@ -31,7 +30,6 @@ livox_ros2_params = [
     {"output_data_type": output_type},
     {"frame_id": frame_id},
     {"lvx_file_path": lvx_file_path},
-    {"return_mode": return_mode},
     {"user_config_path": user_config_path},
     {"cmdline_input_bd_code": cmdline_bd_code}
 ]
@@ -62,7 +60,6 @@ ximea_cam_parameters = {
 
     # Saves images everytime a trigger is pressed, under the director `<image_directory>/calib`
     'calib_mode': False,
-    'cam_context_path': '~/WildPose_v1.1/wildpose/record/cam_context_{}.bin'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S')),
 
     ####################
     # Diagnostics Configuration Parameters Go Here!
@@ -83,11 +80,11 @@ ximea_cam_parameters = {
     # 'image_transport_compressed_png_level': 5,  # 1 to 9 (9: max compression)
 
     # colour image format
-    'format': "XI_RAW8",
+    'format': "XI_RGB24", # BGR 24 bit
 
     # camera coloring
     # white balance mode: 0 - none, 1 - use coefficients, 2: auto
-    'white_balance_mode': 0,
+    'white_balance_mode': 2,
     'white_balance_coef_red': 3.0,  # white balance red coefficient (0 to 8)
     'white_balance_coef_green': 0.0,    # white balance green coefficient (0 to 8)
     'white_balance_coef_blue': 4.0, # white balance blue coefficient (0 to 8)
@@ -98,7 +95,7 @@ ximea_cam_parameters = {
 
     # for camera frame rate
     'frame_rate_control': True, # enable or disable frame rate control (works if no triggering is enabled)
-    'frame_rate_set': 170,   # for trigger mode, fps limiter (0 for none)
+    'frame_rate_set': 60,   # for trigger mode, fps limiter (0 for none)
     'img_capture_timeout': 1000,    # timeout in milliseconds for xiGetImage()
 
     # exposure settings
@@ -117,8 +114,8 @@ ximea_cam_parameters = {
     # 'roi_width': 1280,  # width height in pixels
     # 'roi_height': 1024,
     # - 720p (1280x720)
-    'roi_left': 512,      # top left corner in pixels
-    'roi_top': 184,
+    'roi_left': 64,      # top left corner in pixels
+    'roi_top': 4,
     'roi_width': 1280,  # width height in pixels
     'roi_height': 720,
     ################### XIMEA camera user-defined parameters end #####################
@@ -157,11 +154,23 @@ def generate_launch_description():
         arguments=['--ros-args', '--log-level','ERROR']
     )
 
+    gamepad_node = Node(
+        package='joy_linux',
+        executable='joy_linux_node',
+        name='gamepad_f710_publisher',
+        parameters=[
+            {'dev_name', 'Wireless Gamepad F710'}       
+        ],
+        arguments=['--ros-args',
+            '--log-level','ERROR'
+        ]
+    )
+
     rosbag = launch.actions.ExecuteProcess(
         cmd=[
-            'ros2', 'bag', 'record',
+            'ros2', 'bag', 'record', 
             '/xi_image_info', '/image_raw', '/livox/lidar', '/livox/imu',
-            '--qos-profile-overrides-path', '~/WildPose_v1.1/wildpose/src/wildpose_bringup/config/reliability_override.yaml',
+            '--qos-profile-overrides-path', '/home/naoya/WildPose_v1.1/src/wildpose_bringup/config/reliability_override.yaml',
             # '--polling-interval', '0',
             '-o', os.path.join('./rosbags/', now.strftime('%Y%m%d_%H%M%S')),
         ],
@@ -173,5 +182,6 @@ def generate_launch_description():
         ximea_cam_driver,
         image_viewer,
         livox_driver,
+        gamepad_node,
         rosbag,
     ])
