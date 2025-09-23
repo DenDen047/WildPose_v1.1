@@ -61,6 +61,16 @@ export RMW_IMPLEMENTATION=rmw_ecal_dynamic_cpp
 source ~/ros2_ws/src/install/setup.bash
 ```
 
+## Trim eCAL measurement file
+
+Usually, eCAL data is super large.
+So, we recommend to trim the eCAL file before deserialisation.
+
+```bash
+vim ecal_cutter_config.yml
+./ecal_cutter.sh
+```
+
 ## Usage
 
 First of all, you have build the whole folder.
