@@ -14,6 +14,53 @@ Messages:
 3. custom M2S2 bme280_interfaces/msg/EnviroData
 4. custom M2S2 radar_interfaces/msg/Frame
 
+## Install
+
+[eCAL](https://github.com/eclipse-ecal/ecal)
+```bash
+sudo add-apt-repository ppa:ecal/ecal-5.13
+sudo apt update
+sudo apt install -y ecal
+```
+
+[ROS2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
+```bash
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y ros-humble-desktop ros-dev-tools
+mkdir -p ~/ros2_ws/src
+
+# add the below command to .bashrc
+source /opt/ros/humble/setup.bash
+
+rosdep init
+rosdep update
+```
+
+[rmw_ecal](https://github.com/eclipse-ecal/rmw_ecal)
+```bash
+cd ~/ros2_ws/src
+sudo apt install -y \
+    ros-humble-osrf-testing-tools-cpp \
+    ros-humble-test-msgs \
+    ros-humble-image-view
+git clone https://github.com/eclipse-ecal/rosidl_typesupport_protobuf.git
+git clone https://github.com/eclipse-ecal/rmw_ecal
+sudo apt install -y libprotobuf-dev protobuf-compiler
+colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF
+
+# add the below commands to ~/.bashrc
+export RMW_IMPLEMENTATION=rmw_ecal_dynamic_cpp
+source ~/ros2_ws/src/install/setup.bash
+```
+
 ## Usage
 
 First of all, you have build the whole folder.
