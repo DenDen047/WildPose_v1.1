@@ -1,6 +1,6 @@
 ![logo](docs/resources/ARU_logo_rectangle.png)
 
-# M2S2 eCAL Deserializers
+# eCAL Deserializers
 
 
 ## Description
