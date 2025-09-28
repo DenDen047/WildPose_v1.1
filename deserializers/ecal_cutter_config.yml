@@ -11,7 +11,3 @@ trim:
     time: 20
     base: start
     scale: s
-
-exclude:
-   - re : .*Image.*
-   - re : .*V2X.*
