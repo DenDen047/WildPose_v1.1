@@ -99,91 +99,91 @@ JOBS: List[CutterJob] = [
     #     range=CutRange(start_seconds=0.0, end_seconds=114.0),
     #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_001",
     # ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-04-22.063_wildpose_v1.1",
-        range=CutRange(start_seconds=18.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-37-46.216_wildpose_v1.1",
-        range=CutRange(start_seconds=81.0, end_seconds=88.0),
-        output_root="/mnt/data/WildPose_v1.1/Secretarybird/snippet_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-37-46.216_wildpose_v1.1",
-        range=CutRange(start_seconds=92.0, end_seconds=141.0),
-        output_root="/mnt/data/WildPose_v1.1/Secretarybird/snippet_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
-        range=CutRange(start_seconds=36.0, end_seconds=117.0),
-        output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
-        range=CutRange(start_seconds=210.0, end_seconds=335.0),
-        output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
-        range=CutRange(start_seconds=368.0, end_seconds=377.0),
-        output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_005",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
-        range=CutRange(start_seconds=383.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_006",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=29.5, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-15-59.449_wildpose_v1.1",
-        range=CutRange(start_seconds=22.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
-        range=CutRange(start_seconds=48.0, end_seconds=155.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
-        range=CutRange(start_seconds=200.0, end_seconds=255.0),
-        output_root="/mnt/data/WildPose_v1.1/Oryx/snippet_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
-        range=CutRange(start_seconds=270.0, end_seconds=290.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=35.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
-        range=CutRange(start_seconds=45.0, end_seconds=85.0),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
-        range=CutRange(start_seconds=110.0, end_seconds=125.0),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
-        range=CutRange(start_seconds=129.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-48-26.589_wildpose_v1.1",
-        range=CutRange(start_seconds=140.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/snippet_007",
-    ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-04-22.063_wildpose_v1.1",
+    #     range=CutRange(start_seconds=18.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_002",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-37-46.216_wildpose_v1.1",
+    #     range=CutRange(start_seconds=81.0, end_seconds=88.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Secretarybird/snippet_001",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-37-46.216_wildpose_v1.1",
+    #     range=CutRange(start_seconds=92.0, end_seconds=141.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Secretarybird/snippet_002",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
+    #     range=CutRange(start_seconds=36.0, end_seconds=117.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_003",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
+    #     range=CutRange(start_seconds=210.0, end_seconds=335.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_004",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
+    #     range=CutRange(start_seconds=368.0, end_seconds=377.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_005",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-43-59.707_wildpose_v1.1",
+    #     range=CutRange(start_seconds=383.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Giraffe/snippet_006",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
+    #     range=CutRange(start_seconds=29.5, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_001",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-15-59.449_wildpose_v1.1",
+    #     range=CutRange(start_seconds=22.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_002",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+    #     range=CutRange(start_seconds=48.0, end_seconds=155.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_003",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+    #     range=CutRange(start_seconds=200.0, end_seconds=255.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Oryx/snippet_001",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+    #     range=CutRange(start_seconds=270.0, end_seconds=290.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Ostrich/snippet_004",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
+    #     range=CutRange(start_seconds=35.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_001",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+    #     range=CutRange(start_seconds=45.0, end_seconds=85.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_002",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+    #     range=CutRange(start_seconds=110.0, end_seconds=125.0),
+    #     output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_003",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+    #     range=CutRange(start_seconds=129.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Springbok/snippet_004",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-48-26.589_wildpose_v1.1",
+    #     range=CutRange(start_seconds=140.0, end_seconds=-1),
+    #     output_root="/mnt/data/WildPose_v1.1/Cheetah/snippet_007",
+    # ),
 ]
 
 
