@@ -25,7 +25,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-raw_dir = os.path.join('.', 'tmp_raw/')
+raw_dir = os.path.join(args.meas_dir, 'raw/')
 rgb_dir = os.path.join(args.meas_dir, 'rgb/')
 lidar_dir = os.path.join(args.meas_dir, 'lidar/')
 sync_rgb_dir = os.path.join(args.meas_dir, 'sync_rgb/')
