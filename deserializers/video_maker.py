@@ -8,6 +8,7 @@ import numpy as np
 import subprocess
 import collections
 from tqdm import tqdm
+from loguru import logger
 
 
 parser = argparse.ArgumentParser()
@@ -123,9 +124,9 @@ def main():
             'rt/livox/lidar',
             lidar_dir,
         ]
-        print('Generate PCD...')
+        logger.info('Generate PCD...')
         _ = subprocess.run(cmd, check=True)
-        print('Done!')
+        logger.info('Done!')
     if args.force or not os.path.exists(imu_json_path):
         cmd = priotized_cmd + [
             './ecal_sample_livox_imu',
@@ -133,18 +134,18 @@ def main():
             'rt/livox/imu',
             imu_json_path,
         ]
-        print('Generate IMU json...')
+        logger.info('Generate IMU json...')
         _ = subprocess.run(cmd, check=True)
-        print('Done!')
+        logger.info('Done!')
 
     # load files
     img_fpaths = sorted(glob.glob(os.path.join(rgb_dir, '*.jpeg')))
 
     # sync images
     if args.force or not os.path.exists(sync_rgb_dir):
-        print('Making sync_rgb dir...')
+        logger.info('Making sync_rgb dir...')
         make_sync_rgb(sync_rgb_dir, rgb_dir, lidar_dir)
-        print('Done!')
+        logger.info('Done!')
 
     # make a video from color images
     if args.force or not os.path.exists(video_path):
@@ -158,17 +159,17 @@ def main():
             frameSize=(width, height)
         )
 
-        print('Making a colour video...')
+        logger.info('Making a colour video...')
         for img_fpath in tqdm(img_fpaths):
             video.write(cv2.imread(img_fpath))
-        print('Done!')
+        logger.info('Done!')
 
         cv2.destroyAllWindows()
         video.release()
 
-        print('Copying the video to the destination...')
+        logger.info('Copying the video to the destination...')
         shutil.copyfile(src=tmp_video_path, dst=video_path)
-        print('Done!')
+        logger.info('Done!')
 
 
 if __name__ == "__main__":
