@@ -12,8 +12,16 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--force', action='store_true')
-parser.add_argument('--meas_dir', type=str, default='~/WildPose_v1.1/wildpose/record/ecal_meas/2023-08-16_20-27-46.008_wildpose_v1.1')
-parser.add_argument('--cam_context_fpath', type=str, default='~/WildPose_v1.1/wildpose/record/cam_context_2023-08-16_19-39-12.bin')
+parser.add_argument(
+    '--meas_dir',
+    type=str,
+    default='/mnt/data/WildPose_v1.1/Secretarybird/snippet_002'
+)
+parser.add_argument(
+    '--cam_context_fpath',
+    type=str,
+    default='/mnt/data/WildPose_v1.1/Secretarybird/snippet_002/cam_context.bin'
+)
 args = parser.parse_args()
 
 raw_dir = os.path.join('.', 'tmp_raw/')
