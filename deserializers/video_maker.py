@@ -8,15 +8,24 @@ import numpy as np
 import subprocess
 import collections
 from tqdm import tqdm
+from loguru import logger
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--force', action='store_true')
-parser.add_argument('--meas_dir', type=str, default='~/WildPose_v1.1/wildpose/record/ecal_meas/2023-08-16_20-27-46.008_wildpose_v1.1')
-parser.add_argument('--cam_context_fpath', type=str, default='~/WildPose_v1.1/wildpose/record/cam_context_2023-08-16_19-39-12.bin')
+parser.add_argument(
+    '--meas_dir',
+    type=str,
+    default='/mnt/data/WildPose_v1.1/Secretarybird/snippet_002'
+)
+parser.add_argument(
+    '--cam_context_fpath',
+    type=str,
+    default='/mnt/data/WildPose_v1.1/Secretarybird/snippet_002/cam_context.bin'
+)
 args = parser.parse_args()
 
-raw_dir = os.path.join('.', 'tmp_raw/')
+raw_dir = os.path.join(args.meas_dir, 'raw/')
 rgb_dir = os.path.join(args.meas_dir, 'rgb/')
 lidar_dir = os.path.join(args.meas_dir, 'lidar/')
 sync_rgb_dir = os.path.join(args.meas_dir, 'sync_rgb/')
@@ -115,9 +124,9 @@ def main():
             'rt/livox/lidar',
             lidar_dir,
         ]
-        print('Generate PCD...')
+        logger.info('Generate PCD...')
         _ = subprocess.run(cmd, check=True)
-        print('Done!')
+        logger.info('Done!')
     if args.force or not os.path.exists(imu_json_path):
         cmd = priotized_cmd + [
             './ecal_sample_livox_imu',
@@ -125,18 +134,18 @@ def main():
             'rt/livox/imu',
             imu_json_path,
         ]
-        print('Generate IMU json...')
+        logger.info('Generate IMU json...')
         _ = subprocess.run(cmd, check=True)
-        print('Done!')
+        logger.info('Done!')
 
     # load files
     img_fpaths = sorted(glob.glob(os.path.join(rgb_dir, '*.jpeg')))
 
     # sync images
     if args.force or not os.path.exists(sync_rgb_dir):
-        print('Making sync_rgb dir...')
+        logger.info('Making sync_rgb dir...')
         make_sync_rgb(sync_rgb_dir, rgb_dir, lidar_dir)
-        print('Done!')
+        logger.info('Done!')
 
     # make a video from color images
     if args.force or not os.path.exists(video_path):
@@ -150,17 +159,17 @@ def main():
             frameSize=(width, height)
         )
 
-        print('Making a colour video...')
+        logger.info('Making a colour video...')
         for img_fpath in tqdm(img_fpaths):
             video.write(cv2.imread(img_fpath))
-        print('Done!')
+        logger.info('Done!')
 
         cv2.destroyAllWindows()
         video.release()
 
-        print('Copying the video to the destination...')
+        logger.info('Copying the video to the destination...')
         shutil.copyfile(src=tmp_video_path, dst=video_path)
-        print('Done!')
+        logger.info('Done!')
 
 
 if __name__ == "__main__":
