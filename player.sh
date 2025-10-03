@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 tmux new-session -d
 tmux split-window -v 'ros2 run image_view image_view --ros-args --remap /image:=/image_raw'
 tmux split-window -h 'ecal_play_gui'
