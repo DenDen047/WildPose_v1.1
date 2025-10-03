@@ -95,39 +95,19 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=0.0, end_seconds=18.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_001",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-02-03.629_wildpose_v1.1",
+        range=CutRange(start_seconds=0.0, end_seconds=11.0),
+        output_root="/mnt/data/WildPose_v1.1/Giraffe/2022-12-03_001",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=18.0, end_seconds=29.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_002",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-02-03.629_wildpose_v1.1",
+        range=CutRange(start_seconds=17.0, end_seconds=79.0),
+        output_root="/mnt/data/WildPose_v1.1/Giraffe/2022-12-03_002",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=71.0, end_seconds=100.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=100.0, end_seconds=133.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=133.0, end_seconds=179.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_005",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=179.0, end_seconds=202.0),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_006",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-09-08_12-01-54.990_wildpose_v1.1",
-        range=CutRange(start_seconds=202.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Cheetah/2022-12-03_007",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_15-02-03.629_wildpose_v1.1",
+        range=CutRange(start_seconds=79.0, end_seconds=113.0),
+        output_root="/mnt/data/WildPose_v1.1/Giraffe/2022-12-03_003",
     ),
 ]
 
