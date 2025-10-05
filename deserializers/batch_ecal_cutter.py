@@ -95,7 +95,7 @@ JOBS: List[CutterJob] = [
     # ),
     CutterJob(
         input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_16-46-59.636_wildpose_v1.1",
-        range=CutRange(start_seconds=29, end_seconds=70),
+        range=CutRange(start_seconds=29, end_seconds=55),
         output_root="/mnt/data/WildPose_v1.1/Wildebeest/2022-12-04_002",
     ),
     CutterJob(
