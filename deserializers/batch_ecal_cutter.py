@@ -94,29 +94,9 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_17-13-17.443_wildpose_v1.1",
-        range=CutRange(start_seconds=0, end_seconds=4),
-        output_root="/mnt/data/WildPose_v1.1/Meerkat/2022-12-04_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_17-13-17.443_wildpose_v1.1",
-        range=CutRange(start_seconds=47, end_seconds=60),
-        output_root="/mnt/data/WildPose_v1.1/Meerkat/2022-12-04_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_17-13-17.443_wildpose_v1.1",
-        range=CutRange(start_seconds=70, end_seconds=108),
-        output_root="/mnt/data/WildPose_v1.1/Meerkat/2022-12-04_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_17-13-17.443_wildpose_v1.1",
-        range=CutRange(start_seconds=123, end_seconds=218),
-        output_root="/mnt/data/WildPose_v1.1/Meerkat/2022-12-04_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_17-13-17.443_wildpose_v1.1",
-        range=CutRange(start_seconds=236, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Meerkat/2022-12-04_005",
+        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_18-02-59.876_wildpose_v1.1",
+        range=CutRange(start_seconds=11, end_seconds=24),
+        output_root="/mnt/data/WildPose_v1.1/Gabar_goshawk/2022-12-04_001",
     ),
 ]
 
