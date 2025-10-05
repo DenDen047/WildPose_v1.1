@@ -94,29 +94,19 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=37.0, end_seconds=83),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_001",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+        range=CutRange(start_seconds=68, end_seconds=84),
+        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_006",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=87.0, end_seconds=137),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_002",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+        range=CutRange(start_seconds=113, end_seconds=125),
+        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_007",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=141, end_seconds=152),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=159, end_seconds=184),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-34-18.440_wildpose_v1.1",
-        range=CutRange(start_seconds=190, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_005",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-41-21.679_wildpose_v1.1",
+        range=CutRange(start_seconds=130, end_seconds=-1),
+        output_root="/mnt/data/WildPose_v1.1/Springbok/2022-12-03_008",
     ),
 ]
 
