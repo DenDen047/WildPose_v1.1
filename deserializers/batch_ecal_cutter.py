@@ -94,9 +94,29 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-15-59.449_wildpose_v1.1",
-        range=CutRange(start_seconds=25.0, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_010",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+        range=CutRange(start_seconds=82.0, end_seconds=128),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_011",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+        range=CutRange(start_seconds=149.0, end_seconds=154),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_012",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+        range=CutRange(start_seconds=200.0, end_seconds=213),
+        output_root="/mnt/data/WildPose_v1.1/Gemsbok/2022-12-03_001",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+        range=CutRange(start_seconds=220.0, end_seconds=254),
+        output_root="/mnt/data/WildPose_v1.1/Gemsbok/2022-12-03_002",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-32-52.735_wildpose_v1.1",
+        range=CutRange(start_seconds=271.0, end_seconds=288),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_013",
     ),
 ]
 
