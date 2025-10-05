@@ -8,6 +8,7 @@ input measurement folders and time ranges. Then run this script.
 
 No CLI arguments are used by design.
 """
+
 import os
 import shutil
 import subprocess
@@ -16,10 +17,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
 
+import yaml  # type: ignore
 from loguru import logger
 from tqdm import tqdm
-import yaml  # type: ignore
-
 
 # ============ User-editable globals (no CLI) ============
 
@@ -32,7 +32,6 @@ ECAL_MEAS_CUTTER: str = "ecal_meas_cutter"
 # Default parameters used for each job's config unless overridden per job.
 DEFAULT_BASENAME: str = "measurement"
 DEFAULT_SPLIT_SIZE_MB: int = 1024
-
 
 
 @dataclass(frozen=True)
@@ -95,49 +94,9 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=30.0, end_seconds=54.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=54.0, end_seconds=65.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=65.0, end_seconds=95.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=95.0, end_seconds=116.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=116.0, end_seconds=139.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_005",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=139.0, end_seconds=165.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_006",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=165.0, end_seconds=203.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_007",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=212.0, end_seconds=233.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_008",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-04-46.033_wildpose_v1.1",
-        range=CutRange(start_seconds=233.0, end_seconds=303.0),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_009",
+        input_path="/media/ikuta/Expansion/2022-12-03/2022-12-01_16-15-59.449_wildpose_v1.1",
+        range=CutRange(start_seconds=25.0, end_seconds=-1),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-03_010",
     ),
 ]
 
@@ -151,7 +110,11 @@ def _validate_environment() -> None:
         If the ecal_meas_cutter binary cannot be found.
     """
 
-    cutter_path = shutil.which(ECAL_MEAS_CUTTER) if os.path.sep not in ECAL_MEAS_CUTTER else ECAL_MEAS_CUTTER
+    cutter_path = (
+        shutil.which(ECAL_MEAS_CUTTER)
+        if os.path.sep not in ECAL_MEAS_CUTTER
+        else ECAL_MEAS_CUTTER
+    )
     if cutter_path is None or not Path(cutter_path).exists():
         message = f"ecal_meas_cutter not found: '{ECAL_MEAS_CUTTER}'. Ensure it is installed and on PATH."
         logger.error(message)
@@ -173,7 +136,9 @@ def _build_config_yaml_text(job: CutterJob) -> str:
     """
 
     basename = job.basename if job.basename else DEFAULT_BASENAME
-    split_size = job.split_size_mb if job.split_size_mb is not None else DEFAULT_SPLIT_SIZE_MB
+    split_size = (
+        job.split_size_mb if job.split_size_mb is not None else DEFAULT_SPLIT_SIZE_MB
+    )
 
     # Keep structure aligned with deserializers/ecal_cutter_config.yml
     cfg = {
@@ -233,7 +198,9 @@ def _write_metadata_yaml(output_dir: Path, input_path: Path, job: CutterJob) -> 
     return meta_path
 
 
-def _run_cutter(job: CutterJob, input_path: Path, output_dir: Path, config_yaml_text: str) -> None:
+def _run_cutter(
+    job: CutterJob, input_path: Path, output_dir: Path, config_yaml_text: str
+) -> None:
     """Execute ecal_meas_cutter for a single job.
 
     Parameters
@@ -317,5 +284,3 @@ def run_batch(jobs: List[CutterJob]) -> None:
 if __name__ == "__main__":
     # Intentional: no CLI. Edit the globals above, then run the script.
     run_batch(JOBS)
-
-

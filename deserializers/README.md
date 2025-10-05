@@ -81,7 +81,7 @@ vim ecal_cutter_config.yml
 Or you can cut scenes at once:
 ```bash
 cd deserializers
-python batch_ecal_cutter.py
+uv run python batch_ecal_cutter.py
 ```
 
 Note: the input and output arguments of `ecal_meas_cutter` should be folder paths.
@@ -108,7 +108,7 @@ cd package
 
 # install
 sudo apt-get update
-sudo apt-get install build-essential linux-headers-"$(uname -r)" 
+sudo apt-get install build-essential linux-headers-"$(uname -r)"
 sudo apt-get install libtiff5
 ./install
 ```
