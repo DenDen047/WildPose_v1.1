@@ -94,9 +94,19 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_16-44-12.586_wildpose_v1.1",
-        range=CutRange(start_seconds=130, end_seconds=204),
-        output_root="/mnt/data/WildPose_v1.1/PCG/2022-12-04_001",
+        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_16-46-59.636_wildpose_v1.1",
+        range=CutRange(start_seconds=29, end_seconds=70),
+        output_root="/mnt/data/WildPose_v1.1/Wildebeest/2022-12-04_002",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_16-46-59.636_wildpose_v1.1",
+        range=CutRange(start_seconds=91, end_seconds=120),
+        output_root="/mnt/data/WildPose_v1.1/Wildebeest/2022-12-04_003",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-04/Morning/2022-12-01_16-46-59.636_wildpose_v1.1",
+        range=CutRange(start_seconds=135, end_seconds=-1),
+        output_root="/mnt/data/WildPose_v1.1/Wildebeest/2022-12-04_004",
     ),
 ]
 
