@@ -94,39 +94,14 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=54 + 15, end_seconds=86),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_001",
+        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-56-16.263_wildpose_v1.1",
+        range=CutRange(start_seconds=43, end_seconds=75),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_008",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=95, end_seconds=113),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=118, end_seconds=194),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=198, end_seconds=280),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_004",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=283, end_seconds=333),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_005",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=348, end_seconds=403),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_006",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-36-11.779_wildpose_v1.1",
-        range=CutRange(start_seconds=412, end_seconds=450),
-        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_007",
+        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_16-56-16.263_wildpose_v1.1",
+        range=CutRange(start_seconds=129, end_seconds=153),
+        output_root="/mnt/data/WildPose_v1.1/Ostrich/2022-12-04_009",
     ),
 ]
 
