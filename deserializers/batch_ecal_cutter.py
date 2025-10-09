@@ -94,9 +94,24 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-21-27.102_wildpose_v1.1",
-        range=CutRange(start_seconds=70, end_seconds=110),
-        output_root="/mnt/vault/WildPose_v1.1/Unknown_bird/2022-12-05_001",
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-53-29.000_wildpose_v1.1",
+        range=CutRange(start_seconds=132, end_seconds=174),
+        output_root="/mnt/vault/WildPose_v1.1/Cape_fox/2022-12-05_001",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-53-29.000_wildpose_v1.1",
+        range=CutRange(start_seconds=180, end_seconds=252),
+        output_root="/mnt/vault/WildPose_v1.1/Cape_fox/2022-12-05_002",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-53-29.000_wildpose_v1.1",
+        range=CutRange(start_seconds=252, end_seconds=336),
+        output_root="/mnt/vault/WildPose_v1.1/Cape_fox/2022-12-05_003",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-53-29.000_wildpose_v1.1",
+        range=CutRange(start_seconds=336, end_seconds=-1),
+        output_root="/mnt/vault/WildPose_v1.1/Cape_fox/2022-12-05_004",
     ),
 ]
 
