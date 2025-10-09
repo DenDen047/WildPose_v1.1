@@ -94,24 +94,9 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_17-04-27.481_wildpose_v1.1",
-        range=CutRange(start_seconds=35, end_seconds=84),
-        output_root="/mnt/data/WildPose_v1.1/Unknown_bird/2022-12-04_001",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_17-04-27.481_wildpose_v1.1",
-        range=CutRange(start_seconds=102, end_seconds=210),
-        output_root="/mnt/data/WildPose_v1.1/Unknown_bird/2022-12-04_002",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_17-04-27.481_wildpose_v1.1",
-        range=CutRange(start_seconds=230, end_seconds=300),
-        output_root="/mnt/data/WildPose_v1.1/Unknown_bird/2022-12-04_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-04/Afternoon/2022-12-04_17-04-27.481_wildpose_v1.1",
-        range=CutRange(start_seconds=385, end_seconds=-1),
-        output_root="/mnt/data/WildPose_v1.1/Unknown_bird/2022-12-04_004",
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_06-21-27.102_wildpose_v1.1",
+        range=CutRange(start_seconds=70, end_seconds=110),
+        output_root="/mnt/vault/WildPose_v1.1/Unknown_bird/2022-12-05_001",
     ),
 ]
 
