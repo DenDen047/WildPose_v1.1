@@ -94,25 +94,35 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-48-22.974_wildpose_v1.1",
-        range=CutRange(start_seconds=54, end_seconds=64),
-        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_007",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+        range=CutRange(start_seconds=20, end_seconds=84),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_011",
     ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-48-22.974_wildpose_v1.1",
-        range=CutRange(start_seconds=72, end_seconds=106),
-        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_008",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-48-22.974_wildpose_v1.1",
-        range=CutRange(start_seconds=118, end_seconds=215),
-        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_009",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-48-22.974_wildpose_v1.1",
-        range=CutRange(start_seconds=223, end_seconds=-1),
-        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_010",
-    ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+    #     range=CutRange(start_seconds=88, end_seconds=142),
+    #     output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_012",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+    #     range=CutRange(start_seconds=144, end_seconds=166),
+    #     output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_013",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+    #     range=CutRange(start_seconds=172, end_seconds=186.5),
+    #     output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_014",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+    #     range=CutRange(start_seconds=192, end_seconds=224),
+    #     output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_015",
+    # ),
+    # CutterJob(
+    #     input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-52-42.988_wildpose_v1.1",
+    #     range=CutRange(start_seconds=244, end_seconds=423),
+    #     output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_016",
+    # ),
 ]
 
 
