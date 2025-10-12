@@ -94,44 +94,19 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=10, end_seconds=14),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_004",
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-29-08.022_wildpose_v1.1",
+        range=CutRange(start_seconds=69, end_seconds=119),
+        output_root="/mnt/vault/WildPose_v1.1/Black-backed_jackal/2022-12-05_001",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=17, end_seconds=26),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_005",
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-29-08.022_wildpose_v1.1",
+        range=CutRange(start_seconds=119, end_seconds=203),
+        output_root="/mnt/vault/WildPose_v1.1/Black-backed_jackal/2022-12-05_002",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=34, end_seconds=52),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_006",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=54, end_seconds=83),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_007",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=85, end_seconds=111),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_008",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=115, end_seconds=142),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_009",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=153, end_seconds=161),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_010",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-14-18.819_wildpose_v1.1",
-        range=CutRange(start_seconds=166, end_seconds=-1),
-        output_root="/mnt/vault/WildPose_v1.1/Ostrich/2022-12-05_011",
+        input_path="/media/ikuta/Expansion/2022-12-05/Morning/2022-12-05_07-29-08.022_wildpose_v1.1",
+        range=CutRange(start_seconds=209, end_seconds=235),
+        output_root="/mnt/vault/WildPose_v1.1/Black-backed_jackal/2022-12-05_003",
     ),
 ]
 
