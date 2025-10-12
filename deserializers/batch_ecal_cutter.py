@@ -94,19 +94,29 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
-        range=CutRange(start_seconds=7, end_seconds=20),
-        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_003",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-40-33.400_wildpose_v1.1",
+        range=CutRange(start_seconds=38, end_seconds=60.5),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_001",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
-        range=CutRange(start_seconds=125, end_seconds=128),
-        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_004",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-40-33.400_wildpose_v1.1",
+        range=CutRange(start_seconds=76, end_seconds=175),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_002",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
-        range=CutRange(start_seconds=132, end_seconds=151),
-        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_005",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-40-33.400_wildpose_v1.1",
+        range=CutRange(start_seconds=182, end_seconds=198),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_003",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-40-33.400_wildpose_v1.1",
+        range=CutRange(start_seconds=200, end_seconds=238),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_004",
+    ),
+    CutterJob(
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-40-33.400_wildpose_v1.1",
+        range=CutRange(start_seconds=256, end_seconds=-1),
+        output_root="/mnt/vault/WildPose_v1.1/Gemsbok/2022-12-05_005",
     ),
 ]
 
