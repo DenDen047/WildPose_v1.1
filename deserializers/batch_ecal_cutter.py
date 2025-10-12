@@ -94,24 +94,19 @@ JOBS: List[CutterJob] = [
     #     output_root="/mnt/data/WildPose_v1.1//snippet_000",
     # ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_16-41-49.409_wildpose_v1.1",
-        range=CutRange(start_seconds=89, end_seconds=110),
-        output_root="/mnt/vault/WildPose_v1.1/MultiSpecies/2022-12-05_001",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
+        range=CutRange(start_seconds=7, end_seconds=20),
+        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_003",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_16-41-49.409_wildpose_v1.1",
-        range=CutRange(start_seconds=118, end_seconds=168),
-        output_root="/mnt/vault/WildPose_v1.1/MultiSpecies/2022-12-05_002",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
+        range=CutRange(start_seconds=125, end_seconds=128),
+        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_004",
     ),
     CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_16-41-49.409_wildpose_v1.1",
-        range=CutRange(start_seconds=190, end_seconds=253),
-        output_root="/mnt/vault/WildPose_v1.1/MultiSpecies/2022-12-05_003",
-    ),
-    CutterJob(
-        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_16-41-49.409_wildpose_v1.1",
-        range=CutRange(start_seconds=272, end_seconds=-1),
-        output_root="/mnt/vault/WildPose_v1.1/MultiSpecies/2022-12-05_004",
+        input_path="/media/ikuta/Expansion/2022-12-05/Afternoon/2022-12-05_17-00-31.024_wildpose_v1.1",
+        range=CutRange(start_seconds=132, end_seconds=151),
+        output_root="/mnt/vault/WildPose_v1.1/PCG/2022-12-05_005",
     ),
 ]
 
