@@ -418,6 +418,7 @@ $ ros2 launch wildpose_bringup wildpose_launch.py
 ```
 
 After that, you can open eCAL Recorder.
+Note that `cam_context` file is generated when the system starts up, so its timestamp will always be earlier than that of the eCAL file.
 
 ```bash
 $ ecal_rec_gui --config ~/WildPose_v1.1/wildpose/src/wildpose_bringup/config/config.ecalrec --activate

@@ -66,9 +66,22 @@ source ~/ros2_ws/src/install/setup.bash
 Usually, eCAL data is super large.
 So, we recommend to [trim the eCAL file](https://eclipse-ecal.github.io/ecal/stable/applications/meas_cutter/meas_cutter.html) before deserialisation.
 
+First, you need to check the timestamp on eCAL player and ROS2 `image_view`:
 ```bash
+ros2 run image_view image_view --ros-args --remap /image:=/image_raw
+```
+
+Then edit the `deserializers/ecal_cutter_config.yml` and run eCAL cutter:
+```bash
+cd deserializers
 vim ecal_cutter_config.yml
 ./ecal_cutter.sh
+```
+
+Or you can cut scenes at once:
+```bash
+cd deserializers
+uv run python batch_ecal_cutter.py
 ```
 
 Note: the input and output arguments of `ecal_meas_cutter` should be folder paths.
@@ -95,7 +108,7 @@ cd package
 
 # install
 sudo apt-get update
-sudo apt-get install build-essential linux-headers-"$(uname -r)" 
+sudo apt-get install build-essential linux-headers-"$(uname -r)"
 sudo apt-get install libtiff5
 ./install
 ```
