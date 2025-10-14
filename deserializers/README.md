@@ -93,6 +93,12 @@ First of all, you have build the whole folder.
 $ cmake .
 ```
 
+Or run at once:
+```bash
+$ cd deserializers
+$ uv run python video_maker.py --meas_dir [meas_dir_path]
+```
+
 ### Ximea Camera Deserializer
 
 This [deserializer](src/deserialize_ximea.cpp) converts a recorded ecal measurement of type [sensor_msgs/msg/Image](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html) into RGB .jpeg images.
