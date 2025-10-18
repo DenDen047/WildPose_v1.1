@@ -137,6 +137,17 @@ where:
 - `out_path_raw` is the path to where you wish to store the post-processed RAW images
 
 
+example:
+```bash
+./ecal_sample_ximea \
+    /home/ikuta/Downloads/gabar-goshawk_test \
+    rt/image_raw \
+    /home/ikuta/Downloads/gabar-goshawk_test/cam_context.bin \
+    /home/ikuta/Downloads/gabar-goshawk_test/rgb/ \
+    /home/ikuta/Downloads/gabar-goshawk_test/raw/
+```
+
+
 ### Livox Deserializer
 
 This [deserializer](src/deserialize_livox.cpp) converts a recorded ecal measurement of type [sensor_msgs/msg/PointCloud2](http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/PointCloud2.html) into a pcd file using the [Point Cloud Library](https://github.com/PointCloudLibrary/pcl).

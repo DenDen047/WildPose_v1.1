@@ -104,7 +104,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".png";
 
         // Frame ID
         uint64_t size_of_frameid;
@@ -194,7 +194,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".png";
 
         if (!std::filesystem::exists(img_name_rgb)) {
             // Frame ID
@@ -261,7 +261,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         }
 
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".png";
         if (!std::filesystem::exists(img_name_rgb)) {
             // std::cout << std::endl << "Processing Ximea Image" << std::endl;
             struct Image* msg = (struct Image*)msg_;
@@ -277,8 +277,16 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
             // std::cout << "image height: " << out_image.height << std::endl;
             // std::cout << "image width: " << out_image.width << std::endl;
 
-            cv::Mat img_mat_rgb = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
-            cv::imwrite(img_name_rgb, img_mat_rgb);
+            // Convert RGBA (4 channels) to RGB (3 channels)
+            cv::Mat img_mat_rgba = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
+            cv::Mat img_mat_rgb;
+            cv::cvtColor(img_mat_rgba, img_mat_rgb, cv::COLOR_RGBA2RGB);
+
+            // Save as PNG with optimal compression
+            std::vector<int> compression_params;
+            compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+            compression_params.push_back(3);  // 0-9, where 9 is max compression (slower)
+            cv::imwrite(img_name_rgb, img_mat_rgb, compression_params);
             // std::cout << "Image Saved" << std::endl;
         }
     }
