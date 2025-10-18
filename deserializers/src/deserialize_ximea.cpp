@@ -104,7 +104,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".webp";
 
         // Frame ID
         uint64_t size_of_frameid;
@@ -194,7 +194,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".webp";
 
         if (!std::filesystem::exists(img_name_rgb)) {
             // Frame ID
@@ -261,7 +261,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         }
 
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".webp";
         if (!std::filesystem::exists(img_name_rgb)) {
             // std::cout << std::endl << "Processing Ximea Image" << std::endl;
             struct Image* msg = (struct Image*)msg_;
@@ -277,8 +277,18 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
             // std::cout << "image height: " << out_image.height << std::endl;
             // std::cout << "image width: " << out_image.width << std::endl;
 
-            cv::Mat img_mat_rgb = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
-            cv::imwrite(img_name_rgb, img_mat_rgb);
+            cv::Mat img_mat_bgra = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
+
+            // Convert BGRA to BGR (remove alpha channel) for proper WebP encoding
+            // XI_RGB32 format from Ximea is actually BGRA (OpenCV byte order)
+            cv::Mat img_mat_bgr;
+            cv::cvtColor(img_mat_bgra, img_mat_bgr, cv::COLOR_BGRA2BGR);
+
+            // WebP lossless compression (quality = 100 for lossless, not 101)
+            std::vector<int> compression_params;
+            compression_params.push_back(cv::IMWRITE_WEBP_QUALITY);
+            compression_params.push_back(100);
+            cv::imwrite(img_name_rgb, img_mat_bgr, compression_params);
             // std::cout << "Image Saved" << std::endl;
         }
     }
