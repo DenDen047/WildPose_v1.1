@@ -285,7 +285,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
             // Save as PNG with optimal compression
             std::vector<int> compression_params;
             compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-            compression_params.push_back(3);  // 0-9, where 9 is max compression (slower)
+            compression_params.push_back(9);  // 0-9, where 9 is max compression (slower)
             cv::imwrite(img_name_rgb, img_mat_rgb, compression_params);
             // std::cout << "Image Saved" << std::endl;
         }

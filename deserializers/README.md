@@ -136,7 +136,6 @@ where:
 - `out_path_rgb` is the path to where you wish to store the post-processed RGB images
 - `out_path_raw` is the path to where you wish to store the post-processed RAW images
 
-
 example:
 ```bash
 ./ecal_sample_ximea \
