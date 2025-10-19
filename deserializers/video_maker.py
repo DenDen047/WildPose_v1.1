@@ -20,6 +20,18 @@ parser.add_argument(
     type=str,
     default="",
 )
+parser.add_argument(
+    "--skip_raw",
+    action="store_true",
+    help="Skip raw image generation (pass 'none' to deserializer)",
+)
+parser.add_argument(
+    "--image_format",
+    type=str,
+    default="webp",
+    choices=["webp", "jpeg"],
+    help="Output image format for RGB images (default: webp)",
+)
 args = parser.parse_args()
 
 raw_dir = os.path.join(args.meas_dir, "raw/")
@@ -42,7 +54,11 @@ def get_timestamp_from_fpath(fpath: str) -> float:
 
 
 def make_sync_rgb(sync_rgb_dir: str, rgb_dir: str, pcd_dir: str) -> str:
-    img_fpaths = sorted(glob.glob(os.path.join(rgb_dir, "*.jpeg")))
+    # Support both webp and jpeg formats
+    img_fpaths = sorted(
+        glob.glob(os.path.join(rgb_dir, "*.jpeg"))
+        + glob.glob(os.path.join(rgb_dir, "*.webp"))
+    )
     pcd_fpaths = sorted(glob.glob(os.path.join(pcd_dir, "*.pcd")))
 
     # get images corresponding with the pcd files
@@ -116,16 +132,25 @@ def main():
 
     # reconstruction
     if args.force or not os.path.exists(rgb_dir):
-        os.makedirs(raw_dir, exist_ok=True)
+        if not args.skip_raw:
+            os.makedirs(raw_dir, exist_ok=True)
         os.makedirs(rgb_dir, exist_ok=True)
+
+        # Determine raw output path
+        raw_output_path = "none" if args.skip_raw else raw_dir
+
         cmd = priotized_cmd + [
             "./ecal_sample_ximea",
             args.meas_dir,
             "rt/image_raw",
             cam_context_fpath,
             rgb_dir,
-            raw_dir,
+            raw_output_path,
+            args.image_format,
         ]
+        logger.info(
+            f"Running deserializer with image_format={args.image_format}, skip_raw={args.skip_raw}"
+        )
         _ = subprocess.run(cmd, check=True)
     if args.force or not os.path.exists(lidar_dir):
         os.makedirs(lidar_dir, exist_ok=True)
@@ -149,8 +174,11 @@ def main():
         _ = subprocess.run(cmd, check=True)
         logger.info("Done!")
 
-    # load files
-    img_fpaths = sorted(glob.glob(os.path.join(rgb_dir, "*.jpeg")))
+    # load files (support both webp and jpeg formats)
+    img_fpaths = sorted(
+        glob.glob(os.path.join(rgb_dir, "*.jpeg"))
+        + glob.glob(os.path.join(rgb_dir, "*.webp"))
+    )
 
     # sync images
     if args.force or not os.path.exists(sync_rgb_dir):
