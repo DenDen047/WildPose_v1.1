@@ -33,7 +33,8 @@ public:
         std::string channel_name,
         std::string cam_context_path,
         std::string out_path_rgb,
-        std::string out_path_raw
+        std::string out_path_raw,
+        std::string image_format = "webp"
     );
 
     ~DeserializerXimea();
@@ -53,6 +54,8 @@ public:
 
 private:
     std::string cam_context_path, out_path_rgb, out_path_raw;
+    std::string image_format;
+    std::string file_extension;
     HANDLE camh;
     char* cam_context;
     xiProcessingHandle_t proc;
