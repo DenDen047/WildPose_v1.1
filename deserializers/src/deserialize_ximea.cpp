@@ -3,8 +3,10 @@
 
 int main(int argc, char** argv){
     //https://drive.google.com/drive/folders/1CwvUMmM0ryNN6WCilG9mI8PES1_DKQ4m?usp=sharing
-    if(argc != 6) {
+    if(argc != 6 && argc != 7) {
         std::cerr << "Invalid number of arguments!" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <meas_path> <channel_name> <cam_context_path> <out_path_rgb> <out_path_raw> [image_format]" << std::endl;
+        std::cerr << "  image_format: 'webp' (default) or 'jpeg'" << std::endl;
         return 1;
     }
 
@@ -19,6 +21,7 @@ int main(int argc, char** argv){
     std::string cam_context_path =  argv[3];
     std::string out_path_rgb =      argv[4];
     std::string out_path_raw =      argv[5];
+    std::string image_format =      (argc == 7) ? argv[6] : "webp";  // Default: webp
 
     try {
         m2s2::ecal::deserializer::DeserializerXimea xi_deserializer(
@@ -26,7 +29,8 @@ int main(int argc, char** argv){
             channel_name,
             cam_context_path,
             out_path_rgb,
-            out_path_raw
+            out_path_raw,
+            image_format
         );
         xi_deserializer.process_all();
     } catch (const std::exception& e) {
@@ -39,13 +43,25 @@ int main(int argc, char** argv){
 
 namespace m2s2{ namespace ecal{ namespace deserializer{
 
-    DeserializerXimea::DeserializerXimea(std::string meas_path, std::string channel_name, std::string cam_context_path, std::string out_path_rgb, std::string out_path_raw) :
+    DeserializerXimea::DeserializerXimea(std::string meas_path, std::string channel_name, std::string cam_context_path, std::string out_path_rgb, std::string out_path_raw, std::string image_format) :
         Deserializer(meas_path, channel_name),
         cam_context_path(cam_context_path),
         out_path_rgb(out_path_rgb),
-        out_path_raw(out_path_raw)
+        out_path_raw(out_path_raw),
+        image_format(image_format)
 
     {
+        // Validate and set image format
+        if (this->image_format != "webp" && this->image_format != "jpeg") {
+            std::cerr << "Warning: Invalid image format '" << this->image_format << "'. Using default 'webp'." << std::endl;
+            this->image_format = "webp";
+        }
+
+        // Set file extension based on format
+        this->file_extension = (this->image_format == "webp") ? ".webp" : ".jpeg";
+
+        std::cout << "Image format: " << this->image_format << " (extension: " << this->file_extension << ")" << std::endl;
+
         this->camh = NULL;
         this->cam_context = NULL;
         this->cam_context = (char*)malloc(SIZE_OF_CONTEXT_BUFFER);
@@ -104,7 +120,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + this->file_extension;
 
         // Frame ID
         uint64_t size_of_frameid;
@@ -194,7 +210,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
         std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + this->file_extension;
 
         if (!std::filesystem::exists(img_name_rgb)) {
             // Frame ID
@@ -261,7 +277,7 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         }
 
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);
-        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + ".jpeg";
+        std::string img_name_rgb = this->out_path_rgb + this->msg.ID + "_" + timestr + this->file_extension;
         if (!std::filesystem::exists(img_name_rgb)) {
             // std::cout << std::endl << "Processing Ximea Image" << std::endl;
             struct Image* msg = (struct Image*)msg_;
@@ -277,8 +293,25 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
             // std::cout << "image height: " << out_image.height << std::endl;
             // std::cout << "image width: " << out_image.width << std::endl;
 
-            cv::Mat img_mat_rgb = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
-            cv::imwrite(img_name_rgb, img_mat_rgb);
+            cv::Mat img_mat_bgra = cv::Mat(out_image.height, out_image.width, CV_8UC4, out_image.bp);
+
+            // Convert BGRA to BGR (remove alpha channel) for proper encoding
+            // XI_RGB32 format from Ximea is actually BGRA (OpenCV byte order)
+            cv::Mat img_mat_bgr;
+            cv::cvtColor(img_mat_bgra, img_mat_bgr, cv::COLOR_BGRA2BGR);
+
+            // Save with appropriate format and compression
+            std::vector<int> compression_params;
+            if (this->image_format == "jpeg") {
+                // JPEG compression (quality = 95 for high quality)
+                compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+                compression_params.push_back(95);
+            } else {
+                // WebP lossless compression (quality = 100 for lossless)
+                compression_params.push_back(cv::IMWRITE_WEBP_QUALITY);
+                compression_params.push_back(100);
+            }
+            cv::imwrite(img_name_rgb, img_mat_bgr, compression_params);
             // std::cout << "Image Saved" << std::endl;
         }
     }
