@@ -56,6 +56,7 @@ private:
     std::string cam_context_path, out_path_rgb, out_path_raw;
     std::string image_format;
     std::string file_extension;
+    bool skip_raw_output;
     HANDLE camh;
     char* cam_context;
     xiProcessingHandle_t proc;

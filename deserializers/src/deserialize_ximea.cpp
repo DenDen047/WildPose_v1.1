@@ -48,9 +48,18 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         cam_context_path(cam_context_path),
         out_path_rgb(out_path_rgb),
         out_path_raw(out_path_raw),
-        image_format(image_format)
+        image_format(image_format),
+        skip_raw_output(false)
 
     {
+        // Check if raw output should be skipped
+        if (this->out_path_raw == "none") {
+            this->skip_raw_output = true;
+            std::cout << "Raw image output: DISABLED (out_path_raw is 'none')" << std::endl;
+        } else {
+            std::cout << "Raw image output: ENABLED (output path: " << this->out_path_raw << ")" << std::endl;
+        }
+
         // Validate and set image format
         if (this->image_format != "webp" && this->image_format != "jpeg") {
             std::cerr << "Warning: Invalid image format '" << this->image_format << "'. Using default 'webp'." << std::endl;
@@ -267,13 +276,15 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
 
     void DeserializerXimea::process_message(struct BaseMsg* msg_){
 
-        // Save raw image
-        std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
-        std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
-        if (!std::filesystem::exists(img_name_raw)) {
-            cv::Mat img_mat_raw = cv::Mat(this->msg.height, this->msg.width, CV_8UC1, this->msg.data);
-            cv::imwrite(img_name_raw, img_mat_raw);
-            // std::cout << "Raw Image Saved" << std::endl;
+        // Save raw image (skip if disabled)
+        if (!this->skip_raw_output) {
+            std::string timestr_raw = std::to_string(this->msg.timestamp_sec) + "_" + std::to_string(this->msg.timestamp_nanosec);
+            std::string img_name_raw = this->out_path_raw + this->msg.ID + "_" + timestr_raw + ".tiff";
+            if (!std::filesystem::exists(img_name_raw)) {
+                cv::Mat img_mat_raw = cv::Mat(this->msg.height, this->msg.width, CV_8UC1, this->msg.data);
+                cv::imwrite(img_name_raw, img_mat_raw);
+                // std::cout << "Raw Image Saved" << std::endl;
+            }
         }
 
         std::string timestr = get_timestamp_string(this->msg.timestamp_sec, this->msg.timestamp_nanosec);

@@ -96,7 +96,7 @@ $ cmake .
 Or run at once:
 ```bash
 $ cd deserializers
-$ uv run python video_maker.py --meas_dir [meas_dir_path]
+$ uv run python video_maker.py --meas_dir [meas_dir_path] --skip_raw
 ```
 
 ### Ximea Camera Deserializer
@@ -126,7 +126,7 @@ $ cmake --build . --target ximea
 
 run:
 ```bash
-./ecal_sample_ximea 'meas_folder_path' 'channel_name' 'cam_context_path' 'out_path_rgb' 'out_path_raw'
+./ecal_sample_ximea 'meas_folder_path' 'channel_name' 'cam_context_path' 'out_path_rgb' 'out_path_raw' [image_format]
 ```
 
 where:
@@ -134,7 +134,20 @@ where:
 - `channel_name` is the channel you wish to deserialize. (This is often `rt/image_raw`)
 - `cam_context_path` is the path to where the camera context file is saved for a specific measurement, to perform post-processing of the raw ximea images
 - `out_path_rgb` is the path to where you wish to store the post-processed RGB images
-- `out_path_raw` is the path to where you wish to store the post-processed RAW images
+- `out_path_raw` is the path to where you wish to store the post-processed RAW images (set to `none` to skip raw image generation)
+- `image_format` (optional) is the output image format for RGB images: `webp` (default, lossless) or `jpeg` (quality=95)
+
+Examples:
+```bash
+# Generate both RGB and RAW images (default: WebP format)
+./ecal_sample_ximea /path/to/meas rt/image_raw /path/to/cam_context.bin /path/to/rgb/ /path/to/raw/
+
+# Generate only RGB images (skip RAW)
+./ecal_sample_ximea /path/to/meas rt/image_raw /path/to/cam_context.bin /path/to/rgb/ none
+
+# Generate RGB images in JPEG format (skip RAW)
+./ecal_sample_ximea /path/to/meas rt/image_raw /path/to/cam_context.bin /path/to/rgb/ none jpeg
+```
 
 
 ### Livox Deserializer
