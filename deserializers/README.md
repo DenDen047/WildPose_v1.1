@@ -99,6 +99,12 @@ $ cd deserializers
 $ uv run python deserializer.py --meas_dir [meas_dir_path] --skip_raw
 ```
 
+Or you can batch-deserialize:
+```bash
+$ cd deserializers
+$ LOGURU_LEVEL=INFO uv run python batch_deserializer.py --parent_dir [parent_dir_of_meas_dirs]
+```
+
 ### Ximea Camera Deserializer
 
 This [deserializer](src/deserialize_ximea.cpp) converts a recorded ecal measurement of type [sensor_msgs/msg/Image](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html) into RGB .jpeg images.
