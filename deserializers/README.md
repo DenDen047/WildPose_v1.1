@@ -96,7 +96,7 @@ $ cmake .
 Or run at once:
 ```bash
 $ cd deserializers
-$ uv run python video_maker.py --meas_dir [meas_dir_path] --skip_raw
+$ uv run python deserializer.py --meas_dir [meas_dir_path] --skip_raw
 ```
 
 ### Ximea Camera Deserializer
