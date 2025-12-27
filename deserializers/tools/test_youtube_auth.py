@@ -17,13 +17,11 @@ from googleapiclient.discovery import build
 from loguru import logger
 
 # YouTube Data API v3のスコープ（アップロード用）
-SCOPES = [
-    "https://www.googleapis.com/auth/youtube.upload",
-    "https://www.googleapis.com/auth/youtube.readonly",
-]
+SCOPES = ["https://www.googleapis.com/auth/youtube"]
+
 
 # パス設定
-SECRETS_DIR = Path(__file__).parent / ".secrets"
+SECRETS_DIR = Path(__file__).parent.parent / ".secrets"
 CLIENT_SECRETS_PATH = SECRETS_DIR / "youtube_api_v3_client_secret.json"
 TOKEN_PATH = SECRETS_DIR / "youtube_token.json"
 

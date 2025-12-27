@@ -29,10 +29,7 @@ from tqdm import tqdm
 # Configuration
 SECRETS_DIR = Path(__file__).parent / ".secrets"
 TOKEN_PATH = SECRETS_DIR / "youtube_token.json"
-SCOPES = [
-    "https://www.googleapis.com/auth/youtube.upload",
-    "https://www.googleapis.com/auth/youtube.readonly",
-]
+SCOPES = ["https://www.googleapis.com/auth/youtube"]
 
 # Target Playlists (hardcoded)
 # 1. WildPose v1.1
@@ -45,7 +42,7 @@ TARGET_PLAYLIST_IDS = [
 # Daily Limit Safety
 # Cost: Upload(1600) + 2*Playlist(50) = 1700 units/video
 # 10,000 / 1700 = 5.88 videos
-MAX_UPLOADS_PER_RUN = 5
+MAX_UPLOADS_PER_RUN = 50
 
 
 def authenticate() -> Credentials:
@@ -311,6 +308,7 @@ def main() -> None:
     upload_count = 0
     logger.info("Starting uploads...")
 
+    videos_to_upload = sorted(videos_to_upload, key=lambda x: x["title"])
     for video in tqdm(videos_to_upload, desc="Batch Upload"):
         if upload_count >= MAX_UPLOADS_PER_RUN:
             logger.warning(
