@@ -96,7 +96,7 @@ def make_vfr_video(
     output_path: str,
     tmp_video_path: str,
 ) -> None:
-    """タイムスタンプに基づいたVFR動画を生成する。
+    """タイムスタンプに基づいた変動フレームレート (Varying Frame Rate) 動画を生成する。
 
     最初のフレームのタイムスタンプを0秒として、
     各フレームの相対的なタイミングを再現する。
