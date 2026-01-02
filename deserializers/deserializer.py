@@ -5,10 +5,8 @@ import os
 import shutil
 import subprocess
 
-import cv2
 import numpy as np
 from loguru import logger
-from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--force", action="store_true")
@@ -61,25 +59,9 @@ def make_sync_rgb(sync_rgb_dir: str, rgb_dir: str, pcd_dir: str) -> str:
     )
     pcd_fpaths = sorted(glob.glob(os.path.join(pcd_dir, "*.pcd")))
 
-    # get images corresponding with the pcd files
-    def _get_timestamp_from_fpath(fpath: str) -> float:
-        fname = os.path.splitext(os.path.basename(fpath))[0]
-        # get timestamp
-        fname = fname.split("_")
-        msg_id = "_".join(fname[:-2])
-        timestamp = float(fname[-2] + "." + fname[-1])
-        return timestamp
-
-    # load image file paths
-    img_timestamps = []
-    for fpath in img_fpaths:
-        timestamp = _get_timestamp_from_fpath(fpath)
-        img_timestamps.append(timestamp)
-    # load PCD file paths
-    pcd_timestamps = []
-    for fpath in pcd_fpaths:
-        timestamp = _get_timestamp_from_fpath(fpath)
-        pcd_timestamps.append(timestamp)
+    # load timestamps from file paths
+    img_timestamps = [get_timestamp_from_fpath(fpath) for fpath in img_fpaths]
+    pcd_timestamps = [get_timestamp_from_fpath(fpath) for fpath in pcd_fpaths]
 
     # get the image file paths synchronized PCD files
     sync_img_fpaths = []
@@ -107,6 +89,117 @@ def make_sync_rgb(sync_rgb_dir: str, rgb_dir: str, pcd_dir: str) -> str:
             shutil.copyfile(src=src_fpath, dst=dst_fpath)
 
     return sync_rgb_dir
+
+
+def make_vfr_video(
+    img_fpaths: list[str],
+    output_path: str,
+    tmp_video_path: str,
+) -> None:
+    """タイムスタンプに基づいたVFR動画を生成する。
+
+    最初のフレームのタイムスタンプを0秒として、
+    各フレームの相対的なタイミングを再現する。
+
+    Parameters
+    ----------
+    img_fpaths : list[str]
+        画像ファイルパスのリスト（ソート済み）
+    output_path : str
+        出力動画パス
+    tmp_video_path : str
+        一時ファイルパス（concat list用のディレクトリとしても使用）
+    """
+    # Check FFmpeg availability
+    ffmpeg_path = shutil.which("ffmpeg")
+    if ffmpeg_path is None:
+        logger.error("FFmpeg not found in PATH")
+        raise RuntimeError("FFmpeg not found")
+
+    if len(img_fpaths) < 2:
+        logger.error(f"Need at least 2 images to create video, got {len(img_fpaths)}")
+        raise ValueError("Insufficient images")
+
+    # Extract timestamps and convert to relative time (first frame = 0s)
+    timestamps = [get_timestamp_from_fpath(fp) for fp in img_fpaths]
+    base_timestamp = timestamps[0]
+    relative_timestamps = [t - base_timestamp for t in timestamps]
+
+    # Log FPS statistics
+    deltas = [
+        relative_timestamps[i + 1] - relative_timestamps[i]
+        for i in range(len(relative_timestamps) - 1)
+    ]
+    valid_deltas = [d for d in deltas if d > 0]
+    if len(valid_deltas) > 0:
+        fps_values = [1.0 / d for d in valid_deltas]
+        logger.info(
+            f"FPS stats - min: {min(fps_values):.1f}, max: {max(fps_values):.1f}, "
+            f"median: {np.median(fps_values):.1f}"
+        )
+
+    logger.info(
+        f"Video duration: {relative_timestamps[-1]:.3f}s, frames: {len(img_fpaths)}"
+    )
+
+    # Create concat demuxer file for FFmpeg
+    tmp_dir = os.path.dirname(tmp_video_path) or "."
+    concat_file = os.path.join(tmp_dir, "concat_list.txt")
+
+    with open(concat_file, "w") as f:
+        for i, fpath in enumerate(img_fpaths):
+            f.write(f"file '{os.path.abspath(fpath)}'\n")
+
+            if i < len(img_fpaths) - 1:
+                duration = relative_timestamps[i + 1] - relative_timestamps[i]
+                # Clamp invalid durations
+                if duration <= 0:
+                    logger.warning(
+                        f"Frame {i}: non-positive duration {duration:.6f}s, using 0.001s"
+                    )
+                    duration = 0.001
+                elif duration > 1.0:
+                    logger.warning(
+                        f"Frame {i}: large gap {duration:.3f}s, clamping to 1.0s"
+                    )
+                    duration = 1.0
+            else:
+                # Last frame: use average duration
+                avg_duration = relative_timestamps[-1] / (len(relative_timestamps) - 1)
+                duration = avg_duration
+
+            f.write(f"duration {duration:.6f}\n")
+
+    # Generate VFR video with FFmpeg
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-i",
+        concat_file,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-vsync",
+        "vfr",
+        tmp_video_path,
+    ]
+
+    logger.info("Making a VFR video with FFmpeg...")
+    subprocess.run(cmd, check=True)
+
+    # Cleanup and move to destination
+    os.remove(concat_file)
+    shutil.move(src=tmp_video_path, dst=output_path)
+    logger.info("Done!")
 
 
 def main():
@@ -188,27 +281,7 @@ def main():
 
     # make a video from color images
     if args.force or not os.path.exists(video_path):
-        frame = cv2.imread(img_fpaths[0])
-        height, width, layers = frame.shape
-
-        video = cv2.VideoWriter(
-            tmp_video_path,
-            fourcc=cv2.VideoWriter_fourcc(*"mp4v"),
-            fps=170,
-            frameSize=(width, height),
-        )
-
-        logger.info("Making a colour video...")
-        for img_fpath in tqdm(img_fpaths):
-            video.write(cv2.imread(img_fpath))
-        logger.info("Done!")
-
-        cv2.destroyAllWindows()
-        video.release()
-
-        logger.info("Copying the video to the destination...")
-        shutil.copyfile(src=tmp_video_path, dst=video_path)
-        logger.info("Done!")
+        make_vfr_video(img_fpaths, video_path, tmp_video_path)
 
 
 if __name__ == "__main__":
