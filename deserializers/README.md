@@ -96,7 +96,7 @@ $ cmake .
 Or run at once:
 ```bash
 $ cd deserializers
-$ sudo apt update && sudo apt instrall -y ffmpeg
+$ sudo apt update && sudo apt install -y ffmpeg
 $ uv run python deserializer.py --meas_dir [meas_dir_path] --skip_raw
 ```
 
