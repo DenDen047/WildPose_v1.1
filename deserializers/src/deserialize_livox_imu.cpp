@@ -69,8 +69,8 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::memcpy(&size_of_frameid, &data[ptr], sizeof(size_of_frameid));
         ptr += sizeof(size_of_frameid);
         this->frame_id_cstring = (uint8_t*)malloc((size_t)size_of_frameid);
-        std::memcpy(&this->frame_id_cstring, &data[ptr], sizeof(frame_id_cstring));
-        std::string s((const char*)&frame_id_cstring, size_of_frameid);
+        std::memcpy(this->frame_id_cstring, &data[ptr], (size_t)size_of_frameid);
+        std::string s((const char*)this->frame_id_cstring, size_of_frameid);
         this->msg.ID = s;
         ptr += size_of_frameid;
         // std::cout << "Frame ID: " <<  this->msg.ID << std::endl;
@@ -122,8 +122,8 @@ namespace m2s2{ namespace ecal{ namespace deserializer{
         std::memcpy(&size_of_frameid, &data[ptr], sizeof(size_of_frameid));
         ptr += sizeof(size_of_frameid);
         this->frame_id_cstring = (uint8_t*)malloc((size_t)size_of_frameid);
-        std::memcpy(&this->frame_id_cstring, &data[ptr], sizeof(frame_id_cstring));
-        std::string s((const char*)&frame_id_cstring, size_of_frameid);
+        std::memcpy(this->frame_id_cstring, &data[ptr], (size_t)size_of_frameid);
+        std::string s((const char*)this->frame_id_cstring, size_of_frameid);
         this->msg.ID = s;
         ptr += size_of_frameid;
 
