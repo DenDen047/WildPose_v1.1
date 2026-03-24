@@ -89,6 +89,16 @@ class TestGetPcloudLink:
 
         assert link is None
 
+    def test_returns_none_on_invalid_title(self) -> None:
+        link = get_pcloud_link("../../etc/passwd", PCLOUD_BASE_PATH)
+
+        assert link is None
+
+    def test_returns_none_on_title_with_path_traversal(self) -> None:
+        link = get_pcloud_link("Cheetah/../../../secret", PCLOUD_BASE_PATH)
+
+        assert link is None
+
 
 # =========================================================
 # Tests for get_local_titles()

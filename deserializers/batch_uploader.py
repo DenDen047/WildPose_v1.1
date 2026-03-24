@@ -51,6 +51,31 @@ MAX_UPLOADS_PER_RUN = 50
 
 PCLOUD_LINK_PREFIX = "Download raw data:"
 
+# Title must be "{word}/{word}" where words contain only alphanumerics, underscores, hyphens, dots, and spaces
+_TITLE_RE = re.compile(r"^[\w\-. ]+/[\w\-. ]+$")
+
+
+def _make_title(parent_dir: Path, video_path: Path) -> str:
+    """Derive the YouTube title from a video.mp4 path.
+
+    Parameters
+    ----------
+    parent_dir : Path
+        Root dataset directory.
+    video_path : Path
+        Path to the video.mp4 file.
+
+    Returns
+    -------
+    str
+        Title in "{Animal}/{Measurement}" format.
+    """
+    meas_dir = video_path.parent
+    animal_dir = meas_dir.parent
+    if parent_dir not in animal_dir.parents:
+        return f"{parent_dir.name}/{meas_dir.name}"
+    return f"{animal_dir.name}/{meas_dir.name}"
+
 
 def get_local_titles(parent_dir: Path) -> set[str]:
     """Scan parent_dir for video.mp4 files and return the set of titles.
@@ -67,13 +92,7 @@ def get_local_titles(parent_dir: Path) -> set[str]:
     """
     titles: set[str] = set()
     for video_path in parent_dir.rglob("video.mp4"):
-        meas_dir = video_path.parent
-        animal_dir = meas_dir.parent
-        if parent_dir not in animal_dir.parents:
-            title = f"{parent_dir.name}/{meas_dir.name}"
-        else:
-            title = f"{animal_dir.name}/{meas_dir.name}"
-        titles.add(title)
+        titles.add(_make_title(parent_dir, video_path))
     return titles
 
 
@@ -92,6 +111,10 @@ def get_pcloud_link(title: str, pcloud_base_path: str) -> Optional[str]:
     Optional[str]
         The public link URL, or None on failure.
     """
+    if not _TITLE_RE.match(title):
+        logger.warning(f"Skipping invalid title: {title!r}")
+        return None
+
     remote_path = f"pCloud:{pcloud_base_path}/{title}"
     try:
         result = subprocess.run(
@@ -519,17 +542,7 @@ def _upload_new_videos(
 
     for video_path in parent_dir.rglob("video.mp4"):
         total_found += 1
-        meas_dir = video_path.parent
-        animal_dir = meas_dir.parent
-
-        # Generate title: {Animal}/{Date}_{Number}
-        # Structure: parent_dir / Animal / Measurement / video.mp4
-        if parent_dir not in animal_dir.parents:
-            # User pointed directly to Animal dir
-            title = f"{parent_dir.name}/{meas_dir.name}"
-        else:
-            # User pointed to Dataset root
-            title = f"{animal_dir.name}/{meas_dir.name}"
+        title = _make_title(parent_dir, video_path)
 
         if title in uploaded_videos:
             logger.debug(f"Skip: {title} (Already on YouTube)")
