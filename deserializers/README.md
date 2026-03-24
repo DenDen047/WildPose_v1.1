@@ -153,19 +153,19 @@ uv run python batch_uploader.py --parent_dir /mnt/vault/WildPose_dataset --updat
 
 ### YouTube OAuth2 token setup
 
-1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを作成し、YouTube Data API v3 を有効化
-2. 「APIs & Services > 認証情報」から OAuth 2.0 クライアント ID を作成（種類: デスクトップアプリ）
-3. クライアントシークレット JSON をダウンロードし、以下に配置:
-  ```
+1. Create a project on [Google Cloud Console](https://console.cloud.google.com/) and enable YouTube Data API v3
+2. Go to "APIs & Services > Credentials" and create an OAuth 2.0 Client ID (type: Desktop app)
+3. Download the client secret JSON and place it at:
+   ```
    .secrets/youtube_api_v3_client_secret.json
-  ```
-4. 認証スクリプトを実行（ブラウザが開き Google アカウントで認証）:
-  ```bash
+   ```
+4. Run the authentication script (a browser window will open for Google account login):
+   ```bash
    uv run python tools/test_youtube_auth.py
-  ```
-5. 認証成功後、トークンが `.secrets/youtube_token.json` に保存される
+   ```
+5. On success, the token is saved to `.secrets/youtube_token.json`
 
-**トークン更新**: `invalid_grant` エラーが出た場合は、トークンファイルを削除して再認証:
+**Token renewal**: If you get an `invalid_grant` error, delete the token file and re-authenticate:
 
 ```bash
 rm .secrets/youtube_token.json
