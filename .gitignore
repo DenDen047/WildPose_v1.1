@@ -211,3 +211,4 @@ pyrightconfig.json
 data/**
 deserializers/.secrets
 .understand-anything
+deserializers/AI_INSTRUCTIONS.md
