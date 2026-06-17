@@ -5,9 +5,12 @@ import json
 import numpy as np
 from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
+# NOTE: open3d must be imported before torch on macOS (Apple Silicon).
+# Both bundle their own libomp; importing torch first triggers a fatal
+# "OMP: Error #179 ... pthread_mutex_init failed" double-load crash.
+import open3d as o3d
 import torch
 import torch.utils.data as data
-import open3d as o3d
 from typing import Tuple
 
 from parse_config import ConfigParser
