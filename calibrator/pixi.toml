@@ -1,0 +1,36 @@
+[workspace]
+authors = ["DenDen047 <sh.mn.nat@gmail.com>"]
+channels = ["conda-forge"]
+name = "calibrator"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[activation.env]
+# open3d and torch each bundle their own libomp. On macOS, loading both makes
+# threaded torch/numpy ops (e.g. DataLoader collation, torch.stack) DEADLOCK at
+# 0% CPU ("freezes"). Forcing a single OpenMP thread avoids the dual-runtime
+# contention. (Import order is also handled in manual_calibrator.py.)
+OMP_NUM_THREADS = "1"
+
+[tasks]
+# Interactive manual calibrator (documented entry point)
+calibrate = "python manual_calibrator.py --config debug_config.json"
+
+[dependencies]
+# Only the Python interpreter comes from conda-forge; everything else is on PyPI
+# pinned to the exact versions of the original environment.yml (see CLAUDE.md).
+python = "3.8.*"
+
+[pypi-dependencies]
+numpy = "==1.23.1"
+scipy = "==1.10.1"
+torch = "==2.2.2"
+torchvision = "==0.17.2"
+open3d = "==0.18.0"
+opencv-python = "==4.10.0.84"
+matplotlib = "==3.7.5"
+pandas = "==2.0.3"
+seaborn = "==0.13.2"
+pillow = "==10.4.0"
+tqdm = "==4.66.4"
+tensorboard = "==2.13.0"
