@@ -275,6 +275,7 @@ saved/**
 *.png
 *.pth
 data/*
+/data
 *.mp4
 manual_calibration.json
 
