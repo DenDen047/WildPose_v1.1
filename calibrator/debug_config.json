@@ -13,8 +13,16 @@
                 1024,
                 544
             ],
-            "init_cam_extrinsic_R": [0, 0, 0],
-            "init_cam_extrinsic_t": [0, 0, 0],
+            "init_cam_extrinsic_R": [
+                0,
+                0,
+                0
+            ],
+            "init_cam_extrinsic_t": [
+                0,
+                0,
+                0
+            ],
             "depth_image_size": [
                 1080,
                 1920
@@ -24,15 +32,27 @@
     "data_loader": {
         "type": "EcalDataset",
         "args": {
-            "data_dir": "data/calibration/2024-05-26_15-28-32.795_measurement",
+            "data_dir": "data/lion_walk",
             "init_cam_intrinsic": [
-                10000, 10000, 1024, 544
+                10000,
+                10000,
+                1024,
+                544
             ],
-            "init_cam_extrinsic_R": [0.5, -0.5, 0.5, 0.5],
-            "init_cam_extrinsic_t": [-0.148, 0.02, -0.194],
+            "init_cam_extrinsic_R": [
+                0.5,
+                -0.5,
+                0.5,
+                0.5
+            ],
+            "init_cam_extrinsic_t": [
+                -0.148,
+                0.02,
+                -0.194
+            ],
             "disable_depth_map": true
         },
-        "batch_size": 100,
+        "batch_size": 5,
         "num_workers": 0,
         "shuffle": false,
         "valid_ratio": 0.2
