@@ -5,74 +5,74 @@ channels:
   - defaults
 dependencies:
   - absl-py=2.1.0
-  - aiohttp=3.9.5
-  - aiosignal=1.2.0
+  - aiohttp=3.14.4
+  - aiosignal=1.4.0
   - async-timeout=4.0.3
-  - brotli-python=1.1.0
+  - brotli-python=1.2.0
   - bzip2=1.0.8
-  - c-ares=1.34.4
-  - ca-certificates=2024.12.14
+  - c-ares=1.34.9
+  - ca-certificates=2026.10.19
   - cachetools=5.5.0
-  - cffi=1.16.0
+  - cffi=2.1.1
   - click=8.1.7
-  - cryptography=42.0.8
+  - cryptography=50.0.0
   - frozenlist=1.4.0
   - google-auth-oauthlib=0.5.3
   - libabseil=20240116.2
   - libblas=3.9.0
   - libcblas=3.9.0
   - libcxx=19.1.5
-  - libffi=3.4.2
+  - libffi=3.7.0
   - libgfortran=5.0.0
   - libgfortran5=13.2.0
   - libgrpc=1.62.2
   - liblapack=3.9.0
-  - liblzma=5.6.3
-  - liblzma-devel=5.6.3
+  - liblzma=5.8.3
+  - liblzma-devel=5.8.3
   - libopenblas=0.3.28
   - libprotobuf=4.25.3
   - llvm-openmp=19.1.5
   - markdown=3.6
   - markupsafe=2.1.5
   - multidict=6.0.4
-  - ncurses=6.5
+  - ncurses=6.6
   - oauthlib=3.2.2
-  - openssl=3.4.0
+  - openssl=3.6.5
   - pip=24.1.2
   - pycparser=2.22
-  - pyjwt=2.9.0
-  - pyopenssl=24.2.1
+  - pyjwt=2.14.0
+  - pyopenssl=26.4.0
   - pysocks=1.7.1
-  - python=3.11
+  - python=3.11.17
   - python_abi=3.11
   - pyu2f=0.1.5
-  - re2=2022.04.01
-  - readline=8.2
+  - re2=2023.09.01
+  - readline=8.3
   - requests=2.32.3
   - requests-oauthlib=2.0.0
   - rsa=4.9
   - six=1.16.0
-  - sqlite=3.45.3
+  - sqlite=3.54.1
   - tensorboard=2.13.0
   - tensorboard-data-server=0.7.0
-  - tk=8.6.14
+  - tk=8.6.13
   - typing-extensions=4.12.2
   - typing_extensions=4.12.2
-  - wheel=0.45.1
-  - xz=5.6.3
-  - xz-gpl-tools=5.6.3
-  - xz-tools=5.6.3
-  - yarl=1.8.1
-  - zlib=1.2.13
+  - wheel=0.46.2
+  - xz=5.8.3
+  - xz-gpl-tools=5.8.3
+  - xz-tools=5.8.3
+  - yarl=1.25.1
+  - zlib=1.3.2
   - pip:
       - addict==2.4.0
       - annotated-types==0.7.0
       - anthropic==0.34.1
-      - anyio==4.4.0
+      - anyio==4.14.2
       - attrs==23.2.0
       - beautifulsoup4==4.12.3
       - blinker==1.8.2
-      - certifi==2024.7.4
+      - certifi==2026.10.19
       - charset-normalizer==3.3.2
       - coloredlogs==15.0.1
       - common==0.1.2
@@ -92,7 +92,7 @@ dependencies:
       - flask==3.0.3
       - flatbuffers==24.3.25
       - fonttools==4.53.1
-      - fsspec==2024.6.1
+      - fsspec==2026.6.0
       - google-api-core==2.19.1
       - google-auth==2.34.0
       - google-cloud-bigquery==3.25.0
@@ -103,9 +103,9 @@ dependencies:
       - greenlet==3.1.1
       - grpcio==1.65.5
       - grpcio-status==1.65.5
-      - h11==0.14.0
+      - h11==0.16.0
       - hjson==3.1.0
-      - httpcore==1.0.5
+      - httpcore==1.0.9
       - httpx==0.27.0
       - huggingface-hub==0.24.6
       - humanfriendly==10.0
@@ -121,7 +121,7 @@ dependencies:
       - joblib==1.4.2
       - jsonschema==4.23.0
       - jsonschema-specifications==2023.12.1
-      - jupyter-core==5.7.2
+      - jupyter-core==5.8.1
       - kaleido==0.2.1
       - kiwisolver==1.4.5
       - loguru==0.7.2
@@ -148,8 +148,8 @@ dependencies:
       - pluggy==1.5.0
       - proglog==0.1.10
       - proto-plus==1.24.0
-      - protobuf==5.27.3
-      - pyasn1==0.6.0
+      - protobuf==5.29.6
+      - pyasn1==0.6.4
       - pyasn1-modules==0.4.0
       - pydantic==2.8.2
       - pydantic-core==2.20.1
@@ -176,10 +176,10 @@ dependencies:
       - scikit-learn==1.3.2
       - scipy==1.10.1
       - seaborn==0.13.2
-      - setuptools==72.1.0
+      - setuptools==78.1.1
       - shapely==2.0.6
       - sniffio==1.3.1
-      - soupsieve==2.6
+      - soupsieve==2.8.4
       - sympy==1.13.2
       - tenacity==9.0.0
       - text-unidecode==1.3
@@ -192,7 +192,7 @@ dependencies:
       - tqdm==4.66.4
       - traitlets==5.14.3
       - tzdata==2024.1
-      - urllib3==2.2.2
+      - urllib3==2.8.0
       - werkzeug==3.0.3
       - yolov9-onnx==0.7.0
       - zipp==3.19.2
