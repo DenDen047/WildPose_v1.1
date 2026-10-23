@@ -12,8 +12,9 @@ pixi run calibrate        # = python manual_calibrator.py --config debug_config.
 ```
 
 設計判断:
-- **conda は `python=3.8` のみ。残りは全て PyPI で元 `environment.yml` の pip 版に pin** —
+- **conda は `python=3.11` のみ。残りは全て PyPI で元 `environment.yml` の pip 版に pin** —
   元環境は実質すべて pip 由来だったため、出所を PyPI に統一して ABI 整合を保つ。
+  例外は pillow と numpy。pillow は CVE-2026-112900 を直した 13.0.0 にしており、これが Python 3.11 以上を要求する。numpy は 1.23.1 に cp311 wheel が無く、opencv-python 4.10 が py3.11 で 1.23.5 以上を要求するので 1.23.5（torch 2.2.2 が NumPy 1.x 向けのため 2 未満に留める）。
 - **`environment.yml` の bloat は除外** — `manual_calibrator.py` が実際に import する
   パッケージ（numpy/scipy/torch/torchvision/open3d/opencv-python/matplotlib/
   pandas/seaborn/pillow/tqdm/tensorboard）だけを採用。anthropic/openai/dash/flask/

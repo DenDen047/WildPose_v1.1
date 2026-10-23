@@ -4,66 +4,66 @@ channels:
   - microsoft
   - defaults
 dependencies:
-  - absl-py=2.1.0=pyhd8ed1ab_0
-  - aiohttp=3.9.5=py38hae2e43d_0
-  - aiosignal=1.2.0=pyhd3eb1b0_0
-  - async-timeout=4.0.3=pyhd8ed1ab_0
-  - brotli-python=1.1.0=py38h940360d_1
-  - bzip2=1.0.8=hfdf4475_7
-  - c-ares=1.34.4=hf13058a_0
-  - ca-certificates=2024.12.14=h8857fd0_0
-  - cachetools=5.5.0=pyhd8ed1ab_0
-  - cffi=1.16.0=py38h082e395_0
-  - click=8.1.7=unix_pyh707e725_0
-  - cryptography=42.0.8=py38h09e535d_0
-  - frozenlist=1.4.0=py38h6c40b1e_0
-  - google-auth-oauthlib=0.5.3=pyhd8ed1ab_0
-  - libabseil=20240116.2=cxx17_hf036a51_1
-  - libblas=3.9.0=25_osx64_openblas
-  - libcblas=3.9.0=25_osx64_openblas
-  - libcxx=19.1.5=hf95d169_0
-  - libffi=3.4.2=h0d85af4_5
-  - libgfortran=5.0.0=13_2_0_h97931a8_3
-  - libgfortran5=13.2.0=h2873a65_3
-  - libgrpc=1.62.2=hf2926fd_0
-  - liblapack=3.9.0=25_osx64_openblas
-  - liblzma=5.6.3=hd471939_1
-  - liblzma-devel=5.6.3=hd471939_1
-  - libopenblas=0.3.28=openmp_hbf64a52_1
-  - libprotobuf=4.25.3=h34eed0b_0
-  - llvm-openmp=19.1.5=ha54dae1_0
-  - markdown=3.6=pyhd8ed1ab_0
-  - markupsafe=2.1.5=py38hae2e43d_0
-  - multidict=6.0.4=py38h6c40b1e_0
-  - ncurses=6.5=h5846eda_0
-  - oauthlib=3.2.2=pyhd8ed1ab_0
-  - openssl=3.4.0=hd471939_0
-  - pip=24.1.2=pyhd8ed1ab_0
-  - pycparser=2.22=pyhd8ed1ab_0
-  - pyjwt=2.9.0=pyhd8ed1ab_1
-  - pyopenssl=24.2.1=pyhd8ed1ab_2
-  - pysocks=1.7.1=pyha2e5f31_6
-  - python=3.8.20=hce00570_0
-  - python_abi=3.8=2_cp38
-  - pyu2f=0.1.5=pyhd8ed1ab_0
-  - re2=2022.04.01=h96cf925_0
-  - readline=8.2=h9e318b2_1
-  - requests=2.32.3=pyhd8ed1ab_0
-  - requests-oauthlib=2.0.0=pyhd8ed1ab_0
-  - rsa=4.9=pyhd8ed1ab_0
-  - six=1.16.0=pyh6c4a22f_0
-  - sqlite=3.45.3=h6c40b1e_0
-  - tensorboard=2.13.0=pyhd8ed1ab_0
-  - tensorboard-data-server=0.7.0=py38he13da33_1
-  - tk=8.6.14=h4d00af3_0
-  - typing-extensions=4.12.2=hd8ed1ab_0
-  - typing_extensions=4.12.2=pyha770c72_0
-  - wheel=0.45.1=pyhd8ed1ab_0
-  - xz=5.6.3=h357f2ed_1
-  - xz-gpl-tools=5.6.3=h357f2ed_1
-  - xz-tools=5.6.3=hd471939_1
-  - yarl=1.7.2=py38hed1de0f_2
-  - zlib=1.2.13=h4b97444_1
+  - absl-py=2.1.0
+  - aiohttp=3.9.5
+  - aiosignal=1.2.0
+  - async-timeout=4.0.3
+  - brotli-python=1.1.0
+  - bzip2=1.0.8
+  - c-ares=1.34.4
+  - ca-certificates=2024.12.14
+  - cachetools=5.5.0
+  - cffi=1.16.0
+  - click=8.1.7
+  - cryptography=42.0.8
+  - frozenlist=1.4.0
+  - google-auth-oauthlib=0.5.3
+  - libabseil=20240116.2
+  - libblas=3.9.0
+  - libcblas=3.9.0
+  - libcxx=19.1.5
+  - libffi=3.4.2
+  - libgfortran=5.0.0
+  - libgfortran5=13.2.0
+  - libgrpc=1.62.2
+  - liblapack=3.9.0
+  - liblzma=5.6.3
+  - liblzma-devel=5.6.3
+  - libopenblas=0.3.28
+  - libprotobuf=4.25.3
+  - llvm-openmp=19.1.5
+  - markdown=3.6
+  - markupsafe=2.1.5
+  - multidict=6.0.4
+  - ncurses=6.5
+  - oauthlib=3.2.2
+  - openssl=3.4.0
+  - pip=24.1.2
+  - pycparser=2.22
+  - pyjwt=2.9.0
+  - pyopenssl=24.2.1
+  - pysocks=1.7.1
+  - python=3.11
+  - python_abi=3.11
+  - pyu2f=0.1.5
+  - re2=2022.04.01
+  - readline=8.2
+  - requests=2.32.3
+  - requests-oauthlib=2.0.0
+  - rsa=4.9
+  - six=1.16.0
+  - sqlite=3.45.3
+  - tensorboard=2.13.0
+  - tensorboard-data-server=0.7.0
+  - tk=8.6.14
+  - typing-extensions=4.12.2
+  - typing_extensions=4.12.2
+  - wheel=0.45.1
+  - xz=5.6.3
+  - xz-gpl-tools=5.6.3
+  - xz-tools=5.6.3
+  - yarl=1.8.1
+  - zlib=1.2.13
   - pip:
       - addict==2.4.0
       - annotated-types==0.7.0
@@ -74,7 +74,6 @@ dependencies:
       - blinker==1.8.2
       - certifi==2024.7.4
       - charset-normalizer==3.3.2
-      - chumpy==0.70
       - coloredlogs==15.0.1
       - common==0.1.2
       - configargparse==1.7
@@ -132,7 +131,7 @@ dependencies:
       - nbformat==5.10.4
       - nest-asyncio==1.6.0
       - networkx==3.1
-      - numpy==1.23.1
+      - numpy==1.23.5
       - ocrmac==1.0.0
       - onnxruntime==1.19.0
       - open3d==0.18.0
@@ -141,7 +140,7 @@ dependencies:
       - openpyxl==3.1.5
       - packaging==24.1
       - pandas==2.0.3
-      - pillow==10.4.0
+      - pillow==13.0.0
       - pkgutil-resolve-name==1.3.10
       - platformdirs==4.2.2
       - playwright==1.48.0
@@ -197,4 +196,3 @@ dependencies:
       - werkzeug==3.0.3
       - yolov9-onnx==0.7.0
       - zipp==3.19.2
-prefix: /Users/ikuta/opt/anaconda3/envs/research

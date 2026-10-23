@@ -18,11 +18,15 @@ calibrate = "python manual_calibrator.py --config debug_config.json"
 
 [dependencies]
 # Only the Python interpreter comes from conda-forge; everything else is on PyPI
-# pinned to the exact versions of the original environment.yml (see CLAUDE.md).
-python = "3.8.*"
+# pinned to the exact versions of the original environment.yml (see CLAUDE.md),
+# except numpy and pillow. Python 3.11 is required by Pillow 13.0.0, the first
+# release fixing CVE-2026-112900 (EPS file names passed to Ghostscript unsanitised).
+python = "3.11.*"
 
 [pypi-dependencies]
-numpy = "==1.23.1"
+# 1.23.1 has no cp311 wheels; opencv-python 4.10 needs >=1.23.5 on py3.11.
+# Stay below 2: torch 2.2.2 is built against NumPy 1.x.
+numpy = "==1.23.5"
 scipy = "==1.10.1"
 torch = "==2.2.2"
 torchvision = "==0.17.2"
@@ -31,6 +35,6 @@ opencv-python = "==4.10.0.84"
 matplotlib = "==3.7.5"
 pandas = "==2.0.3"
 seaborn = "==0.13.2"
-pillow = "==10.4.0"
+pillow = "==13.0.0"
 tqdm = "==4.66.4"
 tensorboard = "==2.13.0"
